@@ -43,7 +43,7 @@ const Update = () => {
 		newConfirmPassword,
 	} = inputValue;
 
-	console.log(inputValue);
+	// console.log(inputValue);
 
 	const hover = isHover => {
 		if (isHover) iconRef.current.style.color = "black";

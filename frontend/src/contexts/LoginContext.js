@@ -105,9 +105,6 @@ export const LoginProvider = ({ children }) => {
 	function setAuthToken(token) {
 		if (token) {
 			localStorage.setItem("token", `Bearer ${token}`);
-			// api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-			// console.log(api);
-			// setApi(api);
 		} else {
 			localStorage.clear();
 		}
@@ -115,7 +112,7 @@ export const LoginProvider = ({ children }) => {
 
 	useEffect(() => {
 		localStorage.setItem("user", JSON.stringify(user));
-		console.log(user);
+		// console.log(user);
 		// isDataSaved(false);
 		// setIsDataSaved(false);
 		const verifyCookie = async () => {
@@ -137,9 +134,6 @@ export const LoginProvider = ({ children }) => {
 				// 	updateLogin(false);
 				// }
 				// }
-				// const { data } = await axios.post(SERVER_URL + "/", {}, { withCredentials: true });
-				// const { status, user } = data;
-				// status ? saveUser(user) : removeCookie("token");
 			} catch (error) {
 				console.error(error);
 			}
