@@ -6,12 +6,11 @@ import { useToastUpdate } from "../contexts/PageContext";
 
 //Component for Login validation
 const Login = () => {
-	// const navigate = useNavigate();
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
 	const { saveUser, isDataSaved, setAuthToken } = useUpdateUserContext();
 
 	const location = useLocation();
-	const goTo = location.state?.from?.pathname || "/profile";
+	const goTo = location.state?.from?.pathname || "/profile/my-meetings";
 
 	const [inputValue, setInputValue] = useState({
 		email: "",
@@ -44,13 +43,7 @@ const Login = () => {
 			await setAuthToken(data.token);
 			sendToastSuccess(data.message);
 			saveUser(data.existingUser);
-			// updateLogin(true);
 			setIsLoggedIn(true);
-
-			// Redirect to the "/profile" route after successful login
-			// setTimeout(() => {
-			// 	navigate("/profile");
-			// }, 2000);
 		} catch (error) {
 			console.error(error);
 			sendToastError(error.response.data);

@@ -1,27 +1,24 @@
 import React from "react";
-import ProfileContacts from "../Components/Profile/Contacts";
-import ProfileInformation from "../Components/Profile/Information";
-import ProfileTab from "../Components/Profile/ProfileTab";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
-import { useProfileUpdate, useTabContext } from "../contexts/ProfileContext";
+import { useProfileUpdate } from "../contexts/ProfileContext";
 import { useUserContext } from "../contexts/LoginContext";
-import ProfileMeetings from "../Components/Profile/Meetings";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
+import ProfileNav from "../Components/Profile/ProfileNav";
 
-const Profile = () => {
+const Profile = ({ children }) => {
 	const { user, loginStatus } = useUserContext();
-	const tabContext = useTabContext();
 	const { showUpdateView, isUpdateView } = useProfileUpdate();
+	const { pathname } = useLocation();
 
 	return (
 		<>
 			<div className="profile_container">
 				<div className="top_section">
 					{loginStatus && <span>{user.firstName + " " + user.lastName}</span>}
-					{tabContext === "info" && (
+					{pathname === "/profile/info" && (
 						<>
 							{isUpdateView ? (
 								<div style={{ display: "flex" }}>
@@ -46,12 +43,12 @@ const Profile = () => {
 							)}
 						</>
 					)}
-					{tabContext === "contacts" && (
+					{pathname === "/profile/contacts" && (
 						<div className="icon">
 							<PersonAddSharpIcon />
 						</div>
 					)}
-					{tabContext === "my_meetings" && (
+					{pathname === "/profile/my-meetings" && (
 						<div className="icon">
 							<Link to="/meeting" type="button">
 								<AddIcon titleAccess="Add Meeting" />
@@ -59,7 +56,9 @@ const Profile = () => {
 						</div>
 					)}
 				</div>
-				<div className="tab_area">
+				<ProfileNav />
+				{children}
+				{/* <div className="tab_area">
 					<ProfileTab
 						tab_text="My Meetings"
 						is_active={tabContext === "my_meetings"}
@@ -78,7 +77,7 @@ const Profile = () => {
 				</div>
 				{tabContext === "info" && <ProfileInformation />}
 				{tabContext === "contacts" && <ProfileContacts />}
-				{tabContext === "my_meetings" && <ProfileMeetings />}
+				{tabContext === "my_meetings" && <ProfileMeetings />} */}
 			</div>
 		</>
 	);

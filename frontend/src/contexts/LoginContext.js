@@ -72,9 +72,8 @@ export const LoginProvider = ({ children }) => {
 	const [loginStatus, setLoginStatus] = useState(false);
 	// const [logoutPressed, setLogoutPressed] = useState(false);
 	const [isDataSaved, setIsDataSaved] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	// const [isLoggedIn, setIsLoggedIn] = useState(false);
 	// const [cookies, removeCookie] = useCookies([]);
-	const [justSignedUp, setJustSignedUp] = useState(false);
 	// const navigate = useNavigate();
 	// const [api, setApi] = useState(axios.create({
 	//     baseURL: SERVER_URL,
@@ -126,8 +125,8 @@ export const LoginProvider = ({ children }) => {
 		// setIsDataSaved(false);
 		const verifyCookie = async () => {
 			try {
-				setIsLoggedIn(await validateUserSession(user));
-
+				await validateUserSession(user);
+				// setIsLoggedIn(await validateUserSession(user));
 				// if (result) {
 				// const user = await getUser();
 				// if (!user) setUser(user);
@@ -151,18 +150,17 @@ export const LoginProvider = ({ children }) => {
 	}, [user]);
 
 	return (
-		<userContext.Provider value={{ user, loginStatus, justSignedUp }}>
+		<userContext.Provider value={{ user, loginStatus }}>
 			<updateUserContext.Provider
 				value={{
 					isDataSaved,
 					saveUser,
 					updateLogin,
-					setJustSignedUp,
 					setAuthToken,
 				}}
 			>
-				{/* {children} */}
-				{isDataSaved || isLoggedIn ? children : <></>}
+				{children}
+				{/* {isDataSaved && isLoggedIn ? children : <></>} */}
 			</updateUserContext.Provider>
 		</userContext.Provider>
 	);

@@ -1,10 +1,10 @@
 import { useContext, useDebugValue } from "react";
-import AuthContext from "../context/AuthProvider";
+import { useUserContext } from "../contexts/LoginContext";
 
 const useAuth = () => {
-    const { auth } = useContext(AuthContext);
-    useDebugValue(auth, auth => auth?.user ? "Logged In" : "Logged Out")
-    return useContext(AuthContext);
-}
+	const { user } = useContext(useUserContext);
+	useDebugValue("Status", user ? "Logged In" : "Logged Out");
+	return useContext(useUserContext);
+};
 
 export default useAuth;
