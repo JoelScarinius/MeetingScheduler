@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useUpdateUserContext } from "../contexts/LoginContext";
 import APIHandler from "../utils/api-methods";
 import { useToastUpdate } from "../contexts/PageContext";
@@ -9,6 +9,9 @@ const Login = () => {
 	// const navigate = useNavigate();
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
 	const { saveUser, isDataSaved, setAuthToken } = useUpdateUserContext();
+
+	const location = useLocation();
+	const goTo = location.state?.from?.pathname || "/profile";
 
 	const [inputValue, setInputValue] = useState({
 		email: "",
@@ -104,7 +107,7 @@ const Login = () => {
 					</Link>
 				</span>
 			</form>
-			{isDataSaved && isLoggedIn && <Navigate to={"/profile"} />}
+			{isDataSaved && isLoggedIn && <Navigate to={goTo} replace />}
 		</>
 	);
 };

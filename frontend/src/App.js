@@ -6,16 +6,24 @@ import Login from "./views/Login";
 import { MeetingProvider } from "./contexts/MeetingContext";
 import NotFound from "./views/NotFound";
 import { PageProvider } from "./contexts/PageContext";
+import RequireAuth from "./Components/RequireAuth";
 
 function App() {
 	return (
 		<PageProvider>
 			<Routes>
-				<Route path="/meeting" element={<MeetingProvider />} />
-				<Route path="/profile" element={<ProfileProvider />} />
+				{/* Public routes */}
 				<Route path="/" element={<Home />} />
-				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<SignUp />} />
+				<Route path="/login" element={<Login />} />
+
+				{/* Protected routes */}
+				<Route element={<RequireAuth />}>
+					<Route path="/meeting" element={<MeetingProvider />} />
+					<Route path="/profile" element={<ProfileProvider />} />
+				</Route>
+
+				{/* Catch all */}
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</PageProvider>
