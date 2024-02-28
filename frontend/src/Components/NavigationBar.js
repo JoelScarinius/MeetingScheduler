@@ -14,7 +14,7 @@ const NavigationBar = () => {
 
 	const Logout = () => {
 		updateLogin(false);
-		sendToastInfo(`${user.firstName} successfully logged out!`);
+		sendToastInfo(`${user.firstName} logged out!`);
 	};
 
 	return (

@@ -23,7 +23,7 @@ const validateUserSession = async user => {
 		// const token = localStorage.getItem("token");
 		// const user = JSON.parse(localStorage.getItem("user"));
 		// console.log(token);
-		// console.log(user);
+		console.log(user);
 		// saveUser(user);
 
 		// Verify jwt token
@@ -40,27 +40,22 @@ const validateUserSession = async user => {
 		localStorage.setItem("token", "");
 		console.log(error);
 		console.log("No user session currently active");
+		return false;
 		// navigate("/");
 	}
 };
 
 export const LoginProvider = ({ children }) => {
 	// const navigate = useNavigate();
-	const [user, setUser] = useState(() => {
-		const storedUser = localStorage.getItem("user");
-		// console.log(storedUser);
-		return storedUser && storedUser !== undefined
-			? JSON.parse(storedUser)
-			: {
-					firstName: "",
-					lastName: "",
-					email: "",
-					age: "",
-					telephone: "",
-					gender: "",
-					description: "",
-					password: "",
-			  };
+	const [user, setUser] = useState({
+		firstName: "",
+		lastName: "",
+		email: "",
+		age: "",
+		telephone: "",
+		gender: "",
+		description: "",
+		password: "",
 	});
 
 	// const [user, setUser] = useState({
@@ -77,6 +72,7 @@ export const LoginProvider = ({ children }) => {
 	const [loginStatus, setLoginStatus] = useState(false);
 	// const [logoutPressed, setLogoutPressed] = useState(false);
 	const [isDataSaved, setIsDataSaved] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	// const [cookies, removeCookie] = useCookies([]);
 	const [justSignedUp, setJustSignedUp] = useState(false);
 	// const navigate = useNavigate();
@@ -91,12 +87,11 @@ export const LoginProvider = ({ children }) => {
 			setLoginStatus(true);
 		} else {
 			setLoginStatus(false);
-			localStorage.setItem("token", "");
+			localStorage.removeItem("token");
 		}
 	}
 
 	function saveUser(user) {
-		console.log(user);
 		setUser(user);
 		setIsDataSaved(true);
 		updateLogin(true);
@@ -105,19 +100,33 @@ export const LoginProvider = ({ children }) => {
 	function setAuthToken(token) {
 		if (token) {
 			localStorage.setItem("token", `Bearer ${token}`);
-		} else {
-			localStorage.clear();
 		}
+		//  else {
+		// 	localStorage.clear();
+		// }
 	}
 
 	useEffect(() => {
+		setUser(() => {
+			const storedUser = localStorage.getItem("user");
+
+			if (storedUser && storedUser !== undefined) {
+				const savedUser = JSON.parse(storedUser);
+				console.log(savedUser);
+				return savedUser;
+			}
+		});
+	}, []);
+
+	useEffect(() => {
 		localStorage.setItem("user", JSON.stringify(user));
+
 		// console.log(user);
 		// isDataSaved(false);
 		// setIsDataSaved(false);
 		const verifyCookie = async () => {
 			try {
-				await validateUserSession(user);
+				setIsLoggedIn(await validateUserSession(user));
 
 				// if (result) {
 				// const user = await getUser();
@@ -152,8 +161,8 @@ export const LoginProvider = ({ children }) => {
 					setAuthToken,
 				}}
 			>
-				{children}
-				{/* {isDataSaved ? <></> : children} */}
+				{/* {children} */}
+				{isDataSaved || isLoggedIn ? children : <></>}
 			</updateUserContext.Provider>
 		</userContext.Provider>
 	);
