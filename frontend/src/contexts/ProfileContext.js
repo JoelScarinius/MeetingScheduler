@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import Profile from "../views/Profile";
-import { useUserContext } from "./LoginContext";
+// import Profile from "../views/Profile";
+// import { useUserContext } from "./LoginContext";
 
 const TabContext = React.createContext();
 const ProfileUpdateContext = React.createContext();
@@ -14,17 +14,17 @@ export function useProfileUpdate() {
 
 // Context provider component for managing the currently open tab and profile update-related data
 export const ProfileProvider = ({ children }) => {
-	const { justSignedUp } = useUserContext();
-	const [openTab, setOpenTab] = useState(justSignedUp ? "info" : "my_meetings");
-	const [clickedIcon, setClickedIcon] = useState(false);
+	// const { justSignedUp } = useUserContext();
+	// const [openTab, setOpenTab] = useState(justSignedUp ? "info" : "my_meetings");
+	const [isUpdateView, setIsUpdateView] = useState(false);
 	const [details, setDetails] = useState("upcoming");
 
-	function updateTabContext(tab) {
-		setOpenTab(tab);
-	}
+	// function updateTabContext(tab) {
+	// 	setOpenTab(tab);
+	// }
 
-	function updateClickedIcon(clickedIcon) {
-		setClickedIcon(clickedIcon);
+	function showUpdateView(isClicked) {
+		setIsUpdateView(isClicked);
 	}
 
 	function updateSubTabContext(details) {
@@ -32,19 +32,19 @@ export const ProfileProvider = ({ children }) => {
 	}
 
 	return (
-		<TabContext.Provider value={openTab}>
-			<ProfileUpdateContext.Provider
-				value={{
-					updateTabContext,
-					updateClickedIcon,
-					clickedIcon,
-					details,
-					updateSubTabContext,
-				}}
-			>
-				{children}
-				<Profile />
-			</ProfileUpdateContext.Provider>
-		</TabContext.Provider>
+		// <TabContext.Provider value={openTab}>
+		<ProfileUpdateContext.Provider
+			value={{
+				// updateTabContext,
+				showUpdateView,
+				isUpdateView,
+				details,
+				updateSubTabContext,
+			}}
+		>
+			{children}
+			{/* <Profile /> */}
+		</ProfileUpdateContext.Provider>
+		// </TabContext.Provider>
 	);
 };

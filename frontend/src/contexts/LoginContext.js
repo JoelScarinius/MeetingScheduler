@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import axios from "axios";
-import { SERVER_URL } from "../config";
-import { useNavigate } from "react-router-dom";
+import APIHandler from "../utils/api-methods";
+// import { useCookies } from "react-cookie";
+// import axios from "axios";
+// import { SERVER_URL } from "../config";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import APIHandler from "../utils/api-methods";
 
 const userContext = React.createContext();
 const updateUserContext = React.createContext();
@@ -15,7 +18,35 @@ export function useUserContext() {
 	return useContext(userContext);
 }
 
+const validateUserSession = async user => {
+	try {
+		// const token = localStorage.getItem("token");
+		// const user = JSON.parse(localStorage.getItem("user"));
+		// console.log(token);
+		console.log(user);
+		// saveUser(user);
+
+		// Verify jwt token
+		// if (token) {
+		const api = new APIHandler();
+		const res = await api.PostData("/user/", { user: user ? user.firstName : "User" });
+		// console.log(res);
+		console.log(res.data.message);
+		// }
+		// if (user) return user;
+		// else return null;
+		return true;
+	} catch (error) {
+		localStorage.setItem("token", "");
+		console.log(error);
+		console.log("No user session currently active");
+		return false;
+		// navigate("/");
+	}
+};
+
 export const LoginProvider = ({ children }) => {
+	// const navigate = useNavigate();
 	const [user, setUser] = useState({
 		firstName: "",
 		lastName: "",
@@ -26,64 +57,110 @@ export const LoginProvider = ({ children }) => {
 		description: "",
 		password: "",
 	});
-	const [loginStatus, setLoginStatus] = useState(false);
-	const [logoutPressed, setLogoutPressed] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
-	const [cookies, removeCookie] = useCookies([]);
-	const [justSignedUp, setJustSignedUp] = useState(false);
-	const navigate = useNavigate();
 
-	function updateLoginStatus(status) {
-		setLoginStatus(status);
+	// const [user, setUser] = useState({
+	// 	firstName: "",
+	// 	lastName: "",
+	// 	email: "",
+	// 	age: "",
+	// 	telephone: "",
+	// 	gender: "",
+	// 	description: "",
+	// 	password: "",
+	// });
+
+	const [loginStatus, setLoginStatus] = useState(false);
+	// const [logoutPressed, setLogoutPressed] = useState(false);
+	const [isDataSaved, setIsDataSaved] = useState(false);
+	// const [isLoggedIn, setIsLoggedIn] = useState(false);
+	// const [cookies, removeCookie] = useCookies([]);
+	// const navigate = useNavigate();
+	// const [api, setApi] = useState(axios.create({
+	//     baseURL: SERVER_URL,
+	//     timeout: 1000,
+	//     headers:
+	// }));
+
+	function updateLogin(status) {
+		if (status) {
+			setLoginStatus(true);
+		} else {
+			setLoginStatus(false);
+			localStorage.removeItem("token");
+		}
 	}
 
 	function saveUser(user) {
 		setUser(user);
+		setIsDataSaved(true);
+		updateLogin(true);
 	}
 
-	function updateLogoutPressed(logout) {
-		setLogoutPressed(logout);
+	function setAuthToken(token) {
+		if (token) {
+			localStorage.setItem("token", `Bearer ${token}`);
+		}
+		//  else {
+		// 	localStorage.clear();
+		// }
 	}
 
 	useEffect(() => {
+		setUser(() => {
+			const storedUser = localStorage.getItem("user");
+
+			if (storedUser && storedUser !== undefined) {
+				const savedUser = JSON.parse(storedUser);
+				console.log(savedUser);
+				return savedUser;
+			}
+		});
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("user", JSON.stringify(user));
+
+		// console.log(user);
+		// isDataSaved(false);
+		// setIsDataSaved(false);
 		const verifyCookie = async () => {
 			try {
-				if (
-					cookies.token &&
-					!logoutPressed &&
-					window.location.pathname !== "/" &&
-					window.location.pathname !== "/login" &&
-					window.location.pathname !== "/signup"
-				) {
-					updateLoginStatus(true);
-					updateLogoutPressed(false);
-				} else {
-					removeCookie("token");
-					updateLoginStatus(false);
-				}
-				const { data } = await axios.post(SERVER_URL + "/", {}, { withCredentials: true });
-				const { status, user } = data;
-				status ? saveUser(user) : removeCookie("token");
+				await validateUserSession(user);
+				// setIsLoggedIn(await validateUserSession(user));
+				// if (result) {
+				// const user = await getUser();
+				// if (!user) setUser(user);
+				// if (
+				// 	!logoutPressed &&
+				// 	window.location.pathname !== "/" &&
+				// 	window.location.pathname !== "/login" &&
+				// 	window.location.pathname !== "/signup"
+				// ) {
+				// 	updateLogin(true);
+				// 	updateLogoutPressed(false);
+				// } else {
+				// 	updateLogin(false);
+				// }
+				// }
 			} catch (error) {
 				console.error(error);
-			} finally {
-				setIsLoading(false);
 			}
 		};
 		verifyCookie();
-	}, [cookies.token, logoutPressed, removeCookie, navigate]);
+	}, [user]);
 
 	return (
-		<userContext.Provider value={{ user, loginStatus, logoutPressed, justSignedUp }}>
+		<userContext.Provider value={{ user, loginStatus }}>
 			<updateUserContext.Provider
 				value={{
+					isDataSaved,
 					saveUser,
-					updateLoginStatus,
-					updateLogoutPressed,
-					setJustSignedUp,
+					updateLogin,
+					setAuthToken,
 				}}
 			>
-				{isLoading ? <></> : children}
+				{children}
+				{/* {isDataSaved && isLoggedIn ? children : <></>} */}
 			</updateUserContext.Provider>
 		</userContext.Provider>
 	);
