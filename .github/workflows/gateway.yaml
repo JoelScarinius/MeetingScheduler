@@ -1,13 +1,13 @@
 # Automatically tests, builds and deploys the nginx Node.js microservice to Kubernetes on push to the main branch.
-name: Deploy nginx microservice
+name: Deploy gateway microservice
 
 on:
   # Deploys the microservice on push to subfolder nginx on the main branch of this code repository.
   push:
     branches:
-      - main
+      - fix/api-calls
     paths:
-      - "proxy/**" # Only trigger on push to proxy subfolder.
+      - "gateway/**" # Only trigger on push to gateway subfolder.
 
   # Allows workflow to be invoked manually through the GitHub Actions nginx interface.
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend/proxy # Sets default path for "run" commands to the nginx subfolder.
+        working-directory: ./backend/gateway # Sets default path for "run" commands to the nginx subfolder.
 
     # Sets environment variables with values extracted from GitHub Actions Repository Secrets.
     env:
@@ -32,13 +32,13 @@ jobs:
 
       # Builds the Docker image.
       - name: Build
-        run: docker build -t $CONTAINER_REGISTRY_LOGIN_SERVER/proxy:$VERSION --file ./Dockerfile .
+        run: docker build -t $CONTAINER_REGISTRY_LOGIN_SERVER/gateway:$VERSION --file ./Dockerfile .
 
       # Publishes the Docker image to the Azure Container Registry.
       - name: Publish
         run: |
           echo $CONTAINER_REGISTRY_PASSWORD | docker login $CONTAINER_REGISTRY_LOGIN_SERVER --username $CONTAINER_REGISTRY_USERNAME --password-stdin
-          docker push $CONTAINER_REGISTRY_LOGIN_SERVER/proxy:$VERSION
+          docker push $CONTAINER_REGISTRY_LOGIN_SERVER/gateway:$VERSION
 
       # Installs Kubectl and connects it to the Azure Kubernetes Service (AKS) cluster.
       # https://github.com/marketplace/actions/kubernetes-cli-kubectl
@@ -49,8 +49,8 @@ jobs:
 
       # Expands the manifest YAML file (i.e. replaces placeholders in the YAML file with environment variable values)
       # and deploys the microservice to the Azure Kubernetes Service (AKS) cluster.
-      - name: nginx-deployment
-        run: envsubst < kubernetes/nginx-deployment.yaml | kubectl apply -f -
+      - name: gateway-deployment
+        run: envsubst < kubernetes/gateway-deployment.yaml | kubectl apply -f -
 
       - name: hpa-cpu-memory
         run: envsubst < kubernetes/hpa-cpu-memory.yaml | kubectl apply -f -

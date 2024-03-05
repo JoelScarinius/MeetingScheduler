@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: user
+    name: gateway
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: user
+            app: gateway
     template:
         metadata:
             labels:
-                app: user
+                app: gateway
         spec:
             containers:
-                - name: user
-                  image: $CONTAINER_REGISTRY_LOGIN_SERVER/user:$VERSION
+                - name: gateway
+                  image: $CONTAINER_REGISTRY_LOGIN_SERVER/gateway:$VERSION
                   imagePullPolicy: IfNotPresent
                   env:
                       - name: PORT
-                        value: "5001"
+                        value: "5000"
                   resources:
                       requests:
                           cpu: 126m
@@ -30,12 +30,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    name: user
+    name: gateway
 spec:
     selector:
-        app: user
-    type: ClusterIP
+        app: gateway
+    type: LoadBalancer
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 5001
+          targetPort: 5000
