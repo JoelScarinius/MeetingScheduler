@@ -16,7 +16,6 @@ import Profile from "./views/Profile";
 function App() {
 	return (
 		<PageProvider>
-			{/* <ProfileProvider> */}
 			<Routes>
 				{/* Public routes */}
 				<Route path="/" element={<Home />} />
@@ -29,16 +28,19 @@ function App() {
 				<Route element={<RequireAuth />}>
 					<Route path="/meeting" element={<MeetingProvider />} />
 
-					<Route element={<ProfileProvider />}>
-						<Route path="/profile" element={<Profile />}>
-							<Route path="my-meetings" element={<ProfileMeetings />} />
-							<Route path="info" element={<ProfileInformation />} />
-							<Route path="contacts" element={<ProfileContacts />} />
-						</Route>
+					{/* <Route element={<ProfileProvider />}> */}
+					<Route path="/profile">
+						<ProfileProvider>
+							<Profile>
+								<Route path="my-meetings" element={<ProfileMeetings />} />
+								<Route path="info" element={<ProfileInformation />} />
+								<Route path="contacts" element={<ProfileContacts />} />
+							</Profile>
+						</ProfileProvider>
 					</Route>
+					{/* </Route> */}
 				</Route>
 			</Routes>
-			{/* </ProfileProvider> */}
 		</PageProvider>
 	);
 }
