@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - "gateway/**" # Only trigger on push to gateway subfolder.
+      - "backend/gateway/**" # Only trigger on push to gateway subfolder.
 
   # Allows workflow to be invoked manually through the GitHub Actions nginx interface.
   workflow_dispatch:

@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - "user/**" # Only trigger on push to user subfolder.
+      - "backend/user/**" # Only trigger on push to user subfolder.
 
   # Allows workflow to be invoked manually through the GitHub Actions user interface.
   workflow_dispatch:
