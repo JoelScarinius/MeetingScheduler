@@ -6,7 +6,7 @@ metadata:
     test: liveness-meeting
 spec:
   containers:
-    - name: liveness-meeting
+    - name: meeting
       image: $CONTAINER_REGISTRY_LOGIN_SERVER/meeting:$VERSION
       imagePullPolicy: IfNotPresent
       resources:
