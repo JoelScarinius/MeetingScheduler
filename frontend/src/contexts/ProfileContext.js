@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-// import Profile from "../views/Profile";
+import Profile from "../views/Profile";
 // import { useUserContext } from "./LoginContext";
 
 const TabContext = React.createContext();
@@ -42,8 +42,8 @@ export const ProfileProvider = ({ children }) => {
 				updateSubTabContext,
 			}}
 		>
-			{children}
-			{/* <Profile /> */}
+			{/* {children} */}
+			<Profile />
 		</ProfileUpdateContext.Provider>
 		// </TabContext.Provider>
 	);

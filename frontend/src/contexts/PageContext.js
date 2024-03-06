@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavigationBar from "../Components/NavigationBar";
+import { Outlet } from "react-router-dom";
 // import { useLocation } from "react-router-dom";
 
 const ToastContext = React.createContext();
@@ -42,7 +43,8 @@ export const PageProvider = ({ children }) => {
 			{pathname === "/profile" && <NavigationBar />} */}
 			<NavigationBar />
 			<div className="page">
-				{children}
+				{/* {children} */}
+				<Outlet />
 				<ToastContainer />
 			</div>
 		</ToastContext.Provider>

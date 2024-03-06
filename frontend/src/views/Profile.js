@@ -4,11 +4,11 @@ import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
 import { useProfileUpdate } from "../contexts/ProfileContext";
 import { useUserContext } from "../contexts/LoginContext";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Outlet } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
 import ProfileNav from "../Components/Profile/ProfileNav";
 
-const Profile = ({ children }) => {
+const Profile = () => {
 	const { user, loginStatus } = useUserContext();
 	const { showUpdateView, isUpdateView } = useProfileUpdate();
 	const { pathname } = useLocation();
@@ -57,27 +57,7 @@ const Profile = ({ children }) => {
 					)}
 				</div>
 				<ProfileNav />
-				{children}
-				{/* <div className="tab_area">
-					<ProfileTab
-						tab_text="My Meetings"
-						is_active={tabContext === "my_meetings"}
-						tab_name="my_meetings"
-					/>
-					<ProfileTab
-						tab_text="Profile information"
-						is_active={tabContext === "info"}
-						tab_name="info"
-					/>
-					<ProfileTab
-						tab_text="Contacts"
-						is_active={tabContext === "contacts"}
-						tab_name="contacts"
-					/>
-				</div>
-				{tabContext === "info" && <ProfileInformation />}
-				{tabContext === "contacts" && <ProfileContacts />}
-				{tabContext === "my_meetings" && <ProfileMeetings />} */}
+				<Outlet />
 			</div>
 		</>
 	);
