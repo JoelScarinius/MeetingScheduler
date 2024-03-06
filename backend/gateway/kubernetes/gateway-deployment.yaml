@@ -38,5 +38,5 @@ spec:
         app: gateway
     type: LoadBalancer
     ports:
-        - port: 5000
+        - port: 80
           targetPort: 5000
