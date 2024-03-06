@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import APIHandler from "../../../utils/api-methods";
+import axios from "../../../api/axios";
 
 //Component for Profile contacts
 const ProfileContacts = () => {
@@ -8,8 +8,8 @@ const ProfileContacts = () => {
 	const contacts = async () => {
 		try {
 			// Send a GET request to get all users
-			const api = new APIHandler();
-			const existingUser = await api.GetData("/user/users");
+
+			const existingUser = await axios.get("/user/users");
 			setUsers(existingUser.data);
 		} catch (error) {
 			console.error("Error fetching user data:", error);

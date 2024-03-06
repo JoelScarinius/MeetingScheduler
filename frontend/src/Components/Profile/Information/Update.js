@@ -4,7 +4,7 @@ import { useUpdateUserContext, useUserContext } from "../../../contexts/LoginCon
 import { useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { isAlpha, isEmail } from "validator";
-import APIHandler from "../../../utils/api-methods";
+import axios from "../../../api/axios";
 import { useToastUpdate } from "../../../contexts/PageContext";
 
 // Component for updateing user information
@@ -98,9 +98,7 @@ const Update = () => {
 
 		// Send a POST request to update user information
 		try {
-			const api = new APIHandler();
-
-			const { data } = await api.PostData(
+			const { data } = await axios.post(
 				"/user/update",
 				{
 					newId: user.id,

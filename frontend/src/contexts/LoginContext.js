@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import APIHandler from "../utils/api-methods";
+import axios from "../api/axios";
 // import { useCookies } from "react-cookie";
 // import axios from "axios";
 // import { SERVER_URL } from "../config";
 // import { useNavigate } from "react-router-dom";
 // import axios from "axios";
-// import APIHandler from "../utils/api-methods";
 
 const userContext = React.createContext();
 const updateUserContext = React.createContext();
@@ -28,8 +27,8 @@ const validateUserSession = async user => {
 
 		// Verify jwt token
 		// if (token) {
-		const api = new APIHandler();
-		const res = await api.PostData("/user/", { user: user ? user.firstName : "User" });
+
+		const res = await axios.post("/user/", { user: user ? user.firstName : "User" });
 		// console.log(res);
 		console.log(res.data.message);
 		// }
@@ -66,11 +65,6 @@ export const LoginProvider = ({ children }) => {
 	// const [isLoggedIn, setIsLoggedIn] = useState(false);
 	// const [cookies, removeCookie] = useCookies([]);
 	// const navigate = useNavigate();
-	// const [api, setApi] = useState(axios.create({
-	//     baseURL: SERVER_URL,
-	//     timeout: 1000,
-	//     headers:
-	// }));
 
 	function updateLogin(status) {
 		if (status) {

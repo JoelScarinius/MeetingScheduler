@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { useUpdateUserContext } from "../contexts/LoginContext";
 import { isAlpha, isEmail } from "validator";
-import APIHandler from "../utils/api-methods";
+import axios from "../api/axios";
 import { useToastUpdate } from "../contexts/PageContext";
-
-const api = new APIHandler();
 
 //Component for signup
 const Signup = () => {
@@ -63,7 +61,7 @@ const Signup = () => {
 
 		try {
 			console.log(firstName, lastName, email, password);
-			const { data } = await api.PostData(
+			const { data } = await axios.post(
 				"/user/signup",
 				{ firstName, lastName, email, password },
 				{ withCredentials: true }

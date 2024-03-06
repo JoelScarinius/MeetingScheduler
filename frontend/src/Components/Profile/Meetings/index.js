@@ -5,13 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 // import { useUserContext } from "../../../contexts/LoginContext";
 // import { SERVER_URL } from "../../config";
 // import { useUpdateUserContext } from "../../contexts/LoginContext";
-import APIHandler from "../../../utils/api-methods";
+import axios from "../../../api/axios";
 import { useLoaderData } from "react-router-dom";
 
 export const GetMeetings = async userId => {
 	try {
-		const api = new APIHandler();
-		const { data } = await api.GetData(`/meeting/my-meetings/${userId}`);
+		const { data } = await axios.get(`/meeting/my-meetings/${userId}`);
 
 		return data;
 	} catch (error) {

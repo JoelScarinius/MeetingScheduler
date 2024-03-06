@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { useUpdateUserContext } from "../contexts/LoginContext";
-import APIHandler from "../utils/api-methods";
+import axios from "../api/axios";
 import { useToastUpdate } from "../contexts/PageContext";
 
 //Component for Login validation
@@ -33,8 +33,8 @@ const Login = () => {
 
 		try {
 			// Send a POST request to login
-			const api = new APIHandler();
-			const { data } = await api.PostData(
+
+			const { data } = await axios.post(
 				"/user/login",
 				{ ...inputValue },
 				{ withCredentials: true }
