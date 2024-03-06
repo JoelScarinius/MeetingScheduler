@@ -12,24 +12,15 @@ const Signup = () => {
 	const goTo = location.state?.from?.pathname || "/profile/info";
 
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [inputValue, setInputValue] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		confirmEmail: "",
-		password: "",
-		confirmPassword: "",
-	});
-	const { firstName, lastName, email, confirmEmail, password, confirmPassword } = inputValue;
-	const { saveUser, isDataSaved, setAuthToken } = useUpdateUserContext();
 
-	const handleOnChange = e => {
-		const { name, value } = e.target;
-		setInputValue({
-			...inputValue,
-			[name]: value,
-		});
-	};
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [email, setEmail] = useState("");
+	const [confirmEmail, setConfirmEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+
+	const { saveUser, isDataSaved, setAuthToken } = useUpdateUserContext();
 
 	//Handle all inputs from user
 	const handleSubmit = async e => {
@@ -75,107 +66,115 @@ const Signup = () => {
 			console.error(error);
 			sendToastError(error.response.data);
 		}
-		setInputValue({
-			...inputValue,
-			password: "",
-			confirmPassword: "",
-		});
+		setPassword("");
+		setConfirmPassword("");
 	};
 
 	return (
 		<>
 			<form onSubmit={handleSubmit} className="form_container">
-				<div>
-					<label htmlFor="name" className="input_label">
+				<label htmlFor="firstName" className="input_label">
+					<span>
 						Enter your first name
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					type="text"
-					name="firstName"
-					placeholder="FirstName"
-					autoComplete="firstName"
-					value={firstName}
-					onChange={handleOnChange}
-				/>
-				<div>
-					<label htmlFor="name" className="input_label">
+					</span>
+					<input
+						id="firstName"
+						className="input_margin"
+						type="text"
+						name="firstName"
+						placeholder="FirstName"
+						autoComplete="firstName"
+						value={firstName}
+						onChange={e => setFirstName(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="lastName" className="input_label">
+					<span>
 						Enter your last name
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					type="text"
-					name="lastName"
-					placeholder="LastName"
-					autoComplete="lastName"
-					value={lastName}
-					onChange={handleOnChange}
-				/>
-				<div>
-					<label htmlFor="email" className="input_label">
+					</span>
+					<input
+						id="lastName"
+						className="input_margin"
+						type="text"
+						name="lastName"
+						placeholder="LastName"
+						autoComplete="lastName"
+						value={lastName}
+						onChange={e => setLastName(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="email" className="input_label">
+					<span>
 						Enter your email
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					type="email"
-					name="email"
-					placeholder="Email"
-					autoComplete="Email"
-					value={email}
-					onChange={handleOnChange}
-				/>
-				<div>
-					<label htmlFor="Confirm email" className="input_label">
+					</span>
+					<input
+						id="email"
+						className="input_margin"
+						type="email"
+						name="email"
+						placeholder="Email"
+						autoComplete="Email"
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="confirmEmail" className="input_label">
+					<span>
 						Confirm your email
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					type="email"
-					name="confirmEmail"
-					placeholder="Confirm email"
-					autoComplete="Confirm email"
-					value={confirmEmail}
-					onChange={handleOnChange}
-				/>
-				<div>
-					<label htmlFor="password" className="input_label">
+					</span>
+					<input
+						id="confirmEmail"
+						className="input_margin"
+						type="email"
+						name="confirmEmail"
+						placeholder="Confirm email"
+						autoComplete="Confirm email"
+						value={confirmEmail}
+						onChange={e => setConfirmEmail(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="password" className="input_label">
+					<span>
 						Enter your password
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					type="password"
-					name="password"
-					placeholder="Password"
-					autoComplete="Password"
-					value={password}
-					onChange={handleOnChange}
-				/>
-				<div>
-					<label htmlFor="Confirm password" className="input_label">
+					</span>
+					<input
+						id="password"
+						className="input_margin"
+						type="password"
+						name="password"
+						placeholder="Password"
+						autoComplete="Password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="confirmPassword" className="input_label">
+					<span>
 						Confirm your password
 						<b>*</b>
-					</label>
-				</div>
+					</span>
+					<input
+						id="confirmPassword"
+						className="input_margin"
+						type="password"
+						name="confirmPassword"
+						placeholder="Confirm password"
+						autoComplete="Confirm Password"
+						value={confirmPassword}
+						onChange={e => setConfirmPassword(e.target.value)}
+					/>
+				</label>
 
-				<input
-					className="input_margin"
-					type="password"
-					name="confirmPassword"
-					placeholder="Confirm password"
-					autoComplete="Confirm Password"
-					value={confirmPassword}
-					onChange={handleOnChange}
-				/>
 				<button id="confirmation_btn" className="links" type="submit">
 					Sign up
 				</button>
