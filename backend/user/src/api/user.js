@@ -68,8 +68,7 @@ module.exports = (app, channel) => {
 		try {
 			const userInput = req.body;
 			const user = await service.UpdateUser(userInput);
-			const message = `${user.firstName}'s personal info was updated!`;
-			PrintFormattedMessage(message);
+			PrintFormattedMessage(`${user.firstName}'s personal info was updated.`);
 			res.status(200).json({
 				user,
 				message,
