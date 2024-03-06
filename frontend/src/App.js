@@ -5,8 +5,7 @@ import {
 	RouterProvider,
 } from "react-router-dom";
 
-import { LoginProvider, useUserContext } from "./contexts/LoginContext";
-import { DateProvider } from "./contexts/DateContext";
+import { useUserContext } from "./contexts/LoginContext";
 import { PageProvider } from "./contexts/PageContext";
 
 import Home from "./views/Home";

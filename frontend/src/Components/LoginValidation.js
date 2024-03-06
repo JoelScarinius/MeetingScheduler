@@ -12,31 +12,18 @@ const Login = () => {
 	const location = useLocation();
 	const goTo = location.state?.from?.pathname || "/profile/my-meetings";
 
-	const [inputValue, setInputValue] = useState({
-		email: "",
-		password: "",
-	});
-	const { email, password } = inputValue;
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-	// Handle changes in input fields
-	const handleOnChange = e => {
-		const { name, value } = e.target;
-		setInputValue({
-			...inputValue,
-			[name]: value,
-		});
-	};
 
 	const handleSubmit = async e => {
 		e.preventDefault();
 
 		try {
 			// Send a POST request to login
-
 			const { data } = await axios.post(
 				"/user/login",
-				{ ...inputValue },
+				{ email, password },
 				{ withCredentials: true }
 			);
 			// Set the token in local storage
@@ -50,10 +37,7 @@ const Login = () => {
 		}
 
 		// Clear the password input field
-		setInputValue({
-			...inputValue,
-			password: "",
-		});
+		setPassword("");
 	};
 
 	return (
@@ -72,7 +56,7 @@ const Login = () => {
 					placeholder="Email"
 					autoComplete="email"
 					value={email}
-					onChange={handleOnChange}
+					onChange={e => setEmail(e.target.value)}
 				/>
 
 				<div>
@@ -88,7 +72,7 @@ const Login = () => {
 					placeholder="Password"
 					autoComplete="password"
 					value={password}
-					onChange={handleOnChange}
+					onChange={e => setPassword(e.target.value)}
 				/>
 				<button type="submit" id="confirmation_btn" className="links">
 					Login

@@ -110,7 +110,7 @@ export const LoginProvider = ({ children }) => {
 		// setIsDataSaved(false);
 		const verifyCookie = async () => {
 			try {
-				await validateUserSession(user);
+				// await validateUserSession(user);
 				// setIsLoggedIn(await validateUserSession(user));
 				// if (result) {
 				// const user = await getUser();
