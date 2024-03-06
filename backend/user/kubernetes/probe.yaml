@@ -6,7 +6,7 @@ metadata:
         app: probe-user
 spec:
     containers:
-        - name: probe-user
+        - name: user
           image: $CONTAINER_REGISTRY_LOGIN_SERVER/user:$VERSION
           imagePullPolicy: IfNotPresent
           ports:
