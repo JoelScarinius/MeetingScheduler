@@ -1,29 +1,18 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const ProfileNav = () => {
-	const { pathname } = useLocation();
-
 	return (
 		<div className="tab_area">
-			<Link
-				className={`tab ${pathname === "/profile/my-meetings" ? "active" : ""}`}
-				to={"/profile/my-meetings"}
-			>
+			<NavLink className="tab" to="my-meetings">
 				My meetings
-			</Link>
-			<Link
-				className={`tab ${pathname === "/profile/info" ? "active" : ""}`}
-				to={"/profile/info"}
-			>
+			</NavLink>
+			<NavLink className="tab" to="info">
 				Profile information
-			</Link>
-			<Link
-				className={`tab ${pathname === "/profile/contacts" ? "active" : ""}`}
-				to={"/profile/contacts"}
-			>
+			</NavLink>
+			<NavLink className="tab" to="contacts">
 				Contacts
-			</Link>
+			</NavLink>
 		</div>
 	);
 };
