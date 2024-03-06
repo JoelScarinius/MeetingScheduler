@@ -47,16 +47,7 @@ const validateUserSession = async user => {
 
 export const LoginProvider = ({ children }) => {
 	// const navigate = useNavigate();
-	const [user, setUser] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		age: "",
-		telephone: "",
-		gender: "",
-		description: "",
-		password: "",
-	});
+	const [user, setUser] = useState(null);
 
 	// const [user, setUser] = useState({
 	// 	firstName: "",
