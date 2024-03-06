@@ -21,11 +21,13 @@ spec:
                         value: "5000"
                   resources:
                       requests:
-                          cpu: 126m
-                          memory: 126Mi
+                          memory: "256Mi"
+                          cpu: "256m"
                       limits:
-                          cpu: 256m
-                          memory: 256Mi
+                          memory: "512Mi"
+                          cpu: "512m"
+                  ports:
+                      - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
