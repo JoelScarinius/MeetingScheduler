@@ -4,6 +4,7 @@
 [![Deploy user microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/user.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/user.yaml)
 [![Deploy reactui microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/reactui.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/reactui.yaml)
 [![Deploy nginx microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/nginx.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/nginx.yaml)
+[![Deploy gateway microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/gateway.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/gateway.yaml)
 
 This is an OnlineMeetingSchedule tool inspired by Calendly.
 It is an easy way to book meetings, invite people and create event.
@@ -154,8 +155,6 @@ gh workflow run "Deploy user microservice"
 gh workflow run "Deploy reactui microservice"
 gh workflow run "Deploy nginx microservice"
 gh workflow run "Deploy gateway microservice"
-```
-
 
 # Get the public IP address of the load balancer
 $LOAD_BALANCER_PUBLIC_IP = kubectl get service frontend -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
