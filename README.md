@@ -150,6 +150,8 @@ gh secret set KUBE_CONFIG --body $KUBE_CONFIG
 
 # Print the GitHub secrets
 gh secret list
+
+# Deploy the microservices
 gh workflow run "Deploy meeting microservice"
 gh workflow run "Deploy user microservice"
 gh workflow run "Deploy reactui microservice"
@@ -179,7 +181,7 @@ kubectl config current-context
 
 **Github Actions:**
 
-- Go to the `root` directory and run the following commands:
+- Go to the `root` directory and run the following commands to deploy the microservices:
 
 ```github
 gh workflow run "Deploy meeting microservice"
@@ -189,7 +191,12 @@ gh workflow run "Deploy nginx microservice"
 gh workflow run "Deploy gateway microservice"
 ```
 
-```kubectl
-kubectl describe pod 
-kubectl logs 
+**Running load tests:**
+
+```powershell
+# Run the following commands to delete old load test files and run the load tests locally using JMeter
+Remove-Item 'loadTest.csv' -ErrorAction Ignore
+Remove-Item 'loadTest_report' -Recurse -Force -ErrorAction Ignore
+Remove-Item 'jmeter.log' -ErrorAction Ignore
+& 'apache-jmeter-5.6.3\bin\jmeter' -n -t 'loadTest.jmx' -l 'loadTest.csv' -e -o 'loadTest_report'
 ```
