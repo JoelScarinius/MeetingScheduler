@@ -179,7 +179,7 @@ kubectl config current-context
 
 **Github Actions:**
 
-- Go to the `root` directory and run the following commands:
+- Go to the `root` directory and run the following commands to deploy the microservices:
 
 ```github
 gh workflow run "Deploy meeting microservice"
@@ -187,9 +187,4 @@ gh workflow run "Deploy user microservice"
 gh workflow run "Deploy reactui microservice"
 gh workflow run "Deploy nginx microservice"
 gh workflow run "Deploy gateway microservice"
-```
-
-```kubectl
-kubectl describe pod 
-kubectl logs 
 ```
