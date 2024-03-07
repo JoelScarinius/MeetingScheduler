@@ -168,6 +168,10 @@ $LOAD_BALANCER_PUBLIC_IP = kubectl get service gateway -o jsonpath='{.status.loa
 # Print the value of LOAD_BALANCER_PUBLIC_IP
 Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
 
+$LOAD_BALANCER_PUBLIC_IP = kubectl get service nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+# Print the value of LOAD_BALANCER_PUBLIC_IP
+Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
+
 # get the image of the user deployment
 kubectl get deployment user -o=jsonpath='{.spec.template.spec.containers[0].image}'
 
