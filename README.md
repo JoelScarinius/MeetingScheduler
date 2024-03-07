@@ -168,6 +168,10 @@ $LOAD_BALANCER_PUBLIC_IP = kubectl get service gateway -o jsonpath='{.status.loa
 # Print the value of LOAD_BALANCER_PUBLIC_IP
 Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
 
+$LOAD_BALANCER_PUBLIC_IP = kubectl get service nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+# Print the value of LOAD_BALANCER_PUBLIC_IP
+Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
+
 # get the image of the user deployment
 kubectl get deployment user -o=jsonpath='{.spec.template.spec.containers[0].image}'
 
@@ -199,4 +203,15 @@ Remove-Item 'loadTest.csv' -ErrorAction Ignore
 Remove-Item 'loadTest_report' -Recurse -Force -ErrorAction Ignore
 Remove-Item 'jmeter.log' -ErrorAction Ignore
 & 'apache-jmeter-5.6.3\bin\jmeter' -n -t 'loadTest.jmx' -l 'loadTest.csv' -e -o 'loadTest_report'
+```
+
+Increase load on gateway by running the following command:
+
+```powershell
+
+while($true) {
+    $response = Invoke-WebRequest -Uri http://nginx -Method Get -UseBasicParsing
+    $status = $response.StatusCode
+    Write-Host $status -NoNewline
+}
 ```
