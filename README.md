@@ -188,3 +188,13 @@ gh workflow run "Deploy reactui microservice"
 gh workflow run "Deploy nginx microservice"
 gh workflow run "Deploy gateway microservice"
 ```
+
+**Running load tests:**
+
+```powershell
+# Run the following commands to delete old loadtest files and run the load tests
+Remove-Item 'loadTest.csv' -ErrorAction Ignore
+Remove-Item 'loadTest_report' -Recurse -Force -ErrorAction Ignore
+Remove-Item 'jmeter.log' -ErrorAction Ignore
+& 'apache-jmeter-5.6.3\bin\jmeter' -n -t 'loadTest.jmx' -l 'loadTest.csv' -e -o 'loadTest_report'
+```
