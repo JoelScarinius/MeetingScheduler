@@ -53,7 +53,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
           <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
           <stringProp name="HTTPSampler.port">5000</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
-          <stringProp name="HTTPSampler.path">/api/${API_VERSION}/signup</stringProp>
+          <stringProp name="HTTPSampler.path">/localhost/user/signup</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -120,7 +120,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
           <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
           <stringProp name="HTTPSampler.port">5000</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
-          <stringProp name="HTTPSampler.path">/api/${API_VERSION}/login</stringProp>
+          <stringProp name="HTTPSampler.path">/localhost/user/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -181,7 +181,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
           </DebugPostProcessor>
           <hashTree/>
         </hashTree>
-		<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateMeeting">
+		<!-- <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateMeeting">
 		  <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
 		  <stringProp name="HTTPSampler.port">5000</stringProp>
 		  <stringProp name="HTTPSampler.protocol">http</stringProp>
@@ -250,7 +250,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
 		    <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
 		    <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
 		  </JSONPostProcessor>
-		  <hashTree/>
+		  <hashTree/> -->
         <!-- </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetTodos">
           <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
