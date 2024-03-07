@@ -11,11 +11,6 @@
     <hashTree>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="API_VERSION" elementType="Argument">
-            <stringProp name="Argument.name">API_VERSION</stringProp>
-            <stringProp name="Argument.value">v1</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="Gateway" elementType="Argument">
             <stringProp name="Argument.name">Gateway</stringProp>
             <stringProp name="Argument.value">localhost</stringProp>
@@ -53,7 +48,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
           <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
           <stringProp name="HTTPSampler.port">5000</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
-          <stringProp name="HTTPSampler.path">/localhost/user/signup</stringProp>
+          <stringProp name="HTTPSampler.path">/user/signup</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -62,7 +57,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{ &quot;firstName&quot;: &quot;firstname${USER}&quot;, &quot;lastName&quot;: &quot;lastname${USER}&quot;, &quot;email&quot;: &quot;admin${USER}@ju.se&quot;, &quot;password&quot;: &quot;Password123&quot;  }</stringProp>
+                <stringProp name="Argument.value">{ &quot;firstName&quot;: &quot;firstname&quot;, &quot;lastName&quot;: &quot;lastname&quot;, &quot;email&quot;: &quot;admin${USER}@ju.se&quot;, &quot;password&quot;: &quot;Password123&quot;  }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -120,7 +115,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
           <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
           <stringProp name="HTTPSampler.port">5000</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
-          <stringProp name="HTTPSampler.path">/localhost/user/login</stringProp>
+          <stringProp name="HTTPSampler.path">/user/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -181,11 +176,11 @@ Make test last 1 minute (see Scheduler)</stringProp>
           </DebugPostProcessor>
           <hashTree/>
         </hashTree>
-		<!-- <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateMeeting">
+		<HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateMeeting">
 		  <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
 		  <stringProp name="HTTPSampler.port">5000</stringProp>
 		  <stringProp name="HTTPSampler.protocol">http</stringProp>
-		  <stringProp name="HTTPSampler.path">/api/${API_VERSION}/create</stringProp>
+		  <stringProp name="HTTPSampler.path">/meeting/create</stringProp>
 		  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
 		  <stringProp name="HTTPSampler.method">POST</stringProp>
 		  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -250,7 +245,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
 		    <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
 		    <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
 		  </JSONPostProcessor>
-		  <hashTree/> -->
+		  <hashTree/>
         <!-- </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetTodos">
           <stringProp name="HTTPSampler.domain">${Gateway}</stringProp>
