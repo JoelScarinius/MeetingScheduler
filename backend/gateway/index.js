@@ -12,8 +12,10 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/user", proxy("http://108.141.158.1:5001"));
-app.use("/meeting", proxy("http://108.141.158.1:5002"));
+app.use("/user", proxy("http://localhost:5001"));
+app.use("/meeting", proxy("http://localhost:5002"));
+// app.use("/user", proxy("http://user:5001"));
+// app.use("/meeting", proxy("http://meeting:5002"));
 
 app.listen(5000, () => {
 	console.log("Gateway is Listening to Port 5000");

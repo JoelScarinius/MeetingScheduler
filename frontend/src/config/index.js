@@ -1,6 +1,6 @@
 const SERVER_PORT = 5000;
 
-const SERVER_URL = `http://108.141.158.1:${SERVER_PORT}`;
+const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 // const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 // const SERVER_URL = `http://20.54.200.99:${SERVER_PORT}`;
 

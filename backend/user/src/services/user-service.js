@@ -9,6 +9,7 @@ const {
 const {
 	APIError,
 	NotFoundError,
+	AuthenticationError,
 	ValidationError,
 } = require("../utils/error/app-errors");
 
@@ -20,7 +21,7 @@ class UserService {
 	async LogIn({ email, password }) {
 		const existingUser = await this.repository.FindUser(email);
 
-		if (!existingUser) throw new NotFoundError("User not found.");
+		if (!existingUser) throw new AuthenticationError("User not found.");
 		const validPassword = await ValidatePassword(
 			password,
 			existingUser.password,

@@ -46,7 +46,7 @@ module.exports = (app, channel) => {
 	app.get("/users", UserAuth, async (req, res, next) => {
 		try {
 			const existingUsers = await service.GetUsers();
-			res.json(existingUsers);
+			res.status(200).json(existingUsers);
 		} catch (error) {
 			next(error);
 		}
