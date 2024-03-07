@@ -150,6 +150,8 @@ gh secret set KUBE_CONFIG --body $KUBE_CONFIG
 
 # Print the GitHub secrets
 gh secret list
+
+# Deploy the microservices
 gh workflow run "Deploy meeting microservice"
 gh workflow run "Deploy user microservice"
 gh workflow run "Deploy reactui microservice"
