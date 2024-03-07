@@ -204,3 +204,14 @@ Remove-Item 'loadTest_report' -Recurse -Force -ErrorAction Ignore
 Remove-Item 'jmeter.log' -ErrorAction Ignore
 & 'apache-jmeter-5.6.3\bin\jmeter' -n -t 'loadTest.jmx' -l 'loadTest.csv' -e -o 'loadTest_report'
 ```
+
+Increase load on gateway by running the following command:
+
+```powershell
+
+while($true) {
+    $response = Invoke-WebRequest -Uri http://nginx -Method Get -UseBasicParsing
+    $status = $response.StatusCode
+    Write-Host $status -NoNewline
+}
+```
