@@ -192,7 +192,7 @@ gh workflow run "Deploy gateway microservice"
 **Running load tests:**
 
 ```powershell
-# Run the following commands to delete old loadtest files and run the load tests
+# Run the following commands to delete old load test files and run the load tests locally using JMeter
 Remove-Item 'loadTest.csv' -ErrorAction Ignore
 Remove-Item 'loadTest_report' -Recurse -Force -ErrorAction Ignore
 Remove-Item 'jmeter.log' -ErrorAction Ignore
