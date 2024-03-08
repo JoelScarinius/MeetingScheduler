@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const amqplib = require("amqplib");
 
-const { APP_SECRET, EXCHANGE_NAME, USER_SERVICE, MSG_QUEUE_URL } = require("../config");
+const { APP_SECRET, EXCHANGE_NAME, MEETING_SERVICE, MSG_QUEUE_URL } = require("../config");
 const { ValidationError } = require("./error/app-errors");
 
 /* ==================== Utility functions ========================== */
@@ -75,7 +75,7 @@ module.exports.SubscribeMessage = async (channel, service) => {
 	const q = await channel.assertQueue("", { exclusive: true });
 	console.log(` Waiting for messages in queue: ${q.queue}`);
 
-	channel.bindQueue(q.queue, EXCHANGE_NAME, USER_SERVICE);
+	channel.bindQueue(q.queue, EXCHANGE_NAME, MEETING_SERVICE);
 
 	channel.consume(
 		q.queue,
