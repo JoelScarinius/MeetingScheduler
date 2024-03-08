@@ -36,7 +36,6 @@ metadata:
 spec:
     selector:
         app: gateway
-    type: LoadBalancer
     ports:
         - port: 80
           targetPort: 5000

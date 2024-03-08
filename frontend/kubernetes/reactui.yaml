@@ -1,42 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+    name: frontend
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      containers:
-        - name: frontend
-          image: $CONTAINER_REGISTRY_LOGIN_SERVER/frontend:$VERSION
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: PORT
-              value: "3000"
-          resources:
-            requests:
-              cpu: 512m
-              memory: 2048Mi
-            limits:
-              cpu: 1024m
-              memory: 4096Mi
+    replicas: 1
+    selector:
+        matchLabels:
+            app: frontend
+    template:
+        metadata:
+            labels:
+                app: frontend
+        spec:
+            containers:
+                - name: frontend
+                  image: $CONTAINER_REGISTRY_LOGIN_SERVER/frontend:$VERSION
+                  imagePullPolicy: IfNotPresent
+                  env:
+                      - name: PORT
+                        value: "3000"
+                  resources:
+                      requests:
+                          cpu: 512m
+                          memory: 2048Mi
+                      limits:
+                          cpu: 1024m
+                          memory: 4096Mi
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+    name: frontend
 spec:
-  selector:
-    app: frontend
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
+    selector:
+        app: frontend
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 3000
