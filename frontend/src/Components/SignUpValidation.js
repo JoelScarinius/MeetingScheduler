@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
-import { useUpdateUserContext } from "../contexts/LoginContext";
+import { Link, Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import { isAlpha, isEmail } from "validator";
 import axios from "../api/axios";
 import { useToastUpdate } from "../contexts/PageContext";
@@ -8,19 +8,17 @@ import { useToastUpdate } from "../contexts/PageContext";
 //Component for signup
 const Signup = () => {
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
-	const location = useLocation();
-	const goTo = location.state?.from?.pathname || "/profile/info";
+	const { saveUser, isDataSaved } = useAuth();
+
+	const goTo = "/profile/info";
 
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [confirmEmail, setConfirmEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-
-	const { saveUser, isDataSaved, setAuthToken } = useUpdateUserContext();
 
 	//Handle all inputs from user
 	const handleSubmit = async e => {
@@ -57,8 +55,8 @@ const Signup = () => {
 				{ firstName, lastName, email, password },
 				{ withCredentials: true }
 			);
-			// Set the token in local storage
-			await setAuthToken(data.token);
+			console.log(data);
+			// setAccessToken(data.token);
 			sendToastSuccess(data.message);
 			saveUser(data.user);
 			setIsLoggedIn(true);
@@ -180,7 +178,7 @@ const Signup = () => {
 				</button>
 				<span>
 					{"Already have an account? "}
-					<Link className="links" id="signUp-signIn" to={"/login"}>
+					<Link className="links" id="signUp-signIn" to="/login">
 						Login
 					</Link>
 				</span>

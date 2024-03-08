@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import MeetingItem from "../Profile/Meetings/Item";
 import { useMeetingPopUp } from "../../contexts/MeetingContext";
 import { v4 as uuidv4 } from "uuid";
-// import { SERVER_URL } from "../../config";
-// import { useUpdateUserContext } from "../../contexts/LoginContext";
 import axios from "../../api/axios";
 
 const fetchDayMeeting = async (date, monthToDisplay, yearToDisplay) => {
@@ -23,7 +21,6 @@ const DayOverview = () => {
 	const { date, clickedMonth, yearToDisplay } = useMeetingPopUp();
 	const [isLoading, setIsLoading] = useState(true);
 	const [meetings, setMeetings] = useState();
-	// const { api } = useUpdateUserContext();
 
 	useEffect(() => {
 		const renderDayMeetings = async () => {

@@ -3,10 +3,10 @@ import { Autocomplete, TextField } from "@mui/material";
 
 // import { SERVER_URL } from "../../config";
 import ConfirmButton from "../ConfirmButton";
-import { useUserContext } from "../../contexts/LoginContext";
+import useAuth from "../../hooks/useAuth";
+
 import { useDayView } from "../../contexts/MeetingContext";
 import { useDateContext } from "../../contexts/DateContext";
-// import { useUpdateUserContext } from "../../contexts/LoginContext";
 import axios from "../../api/axios";
 
 const fetchUsers = async () => {
@@ -26,8 +26,7 @@ const fetchUsers = async () => {
 };
 
 const CreateMeeting = () => {
-	// const { api } = useUpdateUserContext();
-	const { user } = useUserContext();
+	const { user } = useAuth();
 	const { date, dayString, clickedMonth, yearToDisplay } = useDayView();
 	const { getDate } = useDateContext();
 	const dateString = `${yearToDisplay}-${clickedMonth.toString().padStart(2, "0")}-${date

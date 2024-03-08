@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useProfileUpdate } from "../../../contexts/ProfileContext";
-import { useUpdateUserContext, useUserContext } from "../../../contexts/LoginContext";
+import useAuth from "../../../hooks/useAuth";
 import { useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { isAlpha, isEmail } from "validator";
@@ -9,10 +9,9 @@ import { useToastUpdate } from "../../../contexts/PageContext";
 
 // Component for updateing user information
 const Update = () => {
-	const { user } = useUserContext();
+	const { user, saveUser } = useAuth();
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
 	const { showUpdateView } = useProfileUpdate();
-	const { saveUser } = useUpdateUserContext();
 
 	const iconRef = useRef();
 

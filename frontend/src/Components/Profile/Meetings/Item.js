@@ -6,8 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useEffect } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../../../contexts/LoginContext";
-// import { useUpdateUserContext } from "../../contexts/LoginContext";
+import useAuth from "../../../hooks/useAuth";
 import axios from "../../../api/axios";
 import { useToastUpdate } from "../../../contexts/PageContext";
 
@@ -38,9 +37,8 @@ const deleteMeeting = async meeting => {
 
 //Component for meeting
 const MeetingItem = ({ meeting }) => {
-	// const { api } = useUpdateUserContext();
 	const { sendToastSuccess } = useToastUpdate();
-	const { user } = useUserContext();
+	const { user } = useAuth();
 	const navigate = useNavigate();
 	const [detailViewState, setDetailViewState] = useState(false);
 

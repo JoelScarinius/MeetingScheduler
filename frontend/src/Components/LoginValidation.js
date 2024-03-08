@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { useUpdateUserContext } from "../contexts/LoginContext";
+import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import { useToastUpdate } from "../contexts/PageContext";
 
 //Component for Login validation
 const Login = () => {
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
-	const { saveUser, isDataSaved, setAuthToken } = useUpdateUserContext();
+	const { saveUser, isDataSaved, setAccessToken } = useAuth();
 
 	const location = useLocation();
 	const goTo = location.state?.from?.pathname || "/profile/my-meetings";
@@ -27,7 +27,7 @@ const Login = () => {
 				{ withCredentials: true }
 			);
 			// Set the token in local storage
-			await setAuthToken(data.token);
+			setAccessToken(data.token);
 			sendToastSuccess(data.message);
 			saveUser(data.existingUser);
 			setIsLoggedIn(true);
@@ -43,37 +43,37 @@ const Login = () => {
 	return (
 		<>
 			<form onSubmit={handleSubmit} className="form_container">
-				<div>
-					<label htmlFor="email" className="input_label">
+				<label htmlFor="email" className="input_label">
+					<span>
 						Enter your email
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					name="email"
-					type="email"
-					placeholder="Email"
-					autoComplete="email"
-					value={email}
-					onChange={e => setEmail(e.target.value)}
-				/>
+					</span>
+					<input
+						className="input_margin"
+						name="email"
+						type="email"
+						placeholder="Email"
+						autoComplete="email"
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+					/>
+				</label>
 
-				<div>
-					<label htmlFor="password" className="input_label">
+				<label htmlFor="password" className="input_label">
+					<span>
 						Enter your password
 						<b>*</b>
-					</label>
-				</div>
-				<input
-					className="input_margin"
-					name="password"
-					type="password"
-					placeholder="Password"
-					autoComplete="password"
-					value={password}
-					onChange={e => setPassword(e.target.value)}
-				/>
+					</span>
+					<input
+						className="input_margin"
+						name="password"
+						type="password"
+						placeholder="Password"
+						autoComplete="password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+					/>
+				</label>
 				<button type="submit" id="confirmation_btn" className="links">
 					Login
 				</button>

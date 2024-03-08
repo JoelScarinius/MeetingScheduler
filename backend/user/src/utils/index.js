@@ -4,7 +4,7 @@ const amqplib = require("amqplib");
 const { isAlpha, isEmail, isMobilePhone } = require("validator");
 
 const { APP_SECRET, EXCHANGE_NAME, USER_SERVICE, MSG_QUEUE_URL } = require("../config");
-const { ValidationError } = require("./error/app-errors");
+const { ValidationError, AuthenticationError } = require("./error/app-errors");
 
 /* ==================== Utility functions ========================== */
 
@@ -24,29 +24,37 @@ module.exports.ValidatePassword = async (enteredPassword, savedPassword, salt) =
 	return (await this.GeneratePassword(enteredPassword, salt)) === savedPassword;
 };
 
-module.exports.GenerateSignature = async (payload, tokenDuration) => {
-	try {
-		return await jwt.sign(payload, APP_SECRET, {
-			expiresIn: tokenDuration,
-		});
-	} catch (error) {
-		console.log(error);
-		return error;
-	}
+module.exports.GenerateSignature = async (payload, SECRET, tokenDuration) => {
+	// try {
+	return await jwt.sign(payload, SECRET, {
+		expiresIn: tokenDuration,
+	});
+	// } catch (error) {
+	// 	console.log(error);
+	// 	return error;
+	// }
 };
 
-module.exports.ValidateSignature = async req => {
-	try {
-		const signature = req.get("Authorization");
-		if (signature === undefined) {
-			throw new ValidationError("No valid session token provided.");
-		}
-		const payload = await jwt.verify(signature.split(" ")[1], APP_SECRET);
-		req.user = payload;
+module.exports.ValidateSignature = async (req, next) => {
+	const authHeader = req.headers.authorization || req.headers.Authorization;
+	if (!authHeader?.startsWith("Bearer "))
+		throw new AuthenticationError("No valid session token provided.");
+
+	const token = authHeader.split(" ")[1];
+	console.log(token);
+	const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+		if (err) throw new ValidationError("Invalid token."); //invalid token
+		req.user = decoded.user;
+		// next();
+	});
+
+	// const payload = await jwt.verify(signature.split(" ")[1], APP_SECRET);
+	console.log("payload", payload);
+	const { user } = payload;
+	if (user) {
 		return true;
-	} catch (error) {
-		return false;
 	}
+	return false;
 };
 
 module.exports.ValidateUserInput = async (

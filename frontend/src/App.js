@@ -5,7 +5,7 @@ import {
 	RouterProvider,
 } from "react-router-dom";
 
-import { useUserContext } from "./contexts/LoginContext";
+import useAuth from "./hooks/useAuth";
 import { PageProvider } from "./contexts/PageContext";
 
 import Home from "./views/Home";
@@ -21,10 +21,10 @@ import ProfileContacts from "./Components/Profile/Contacts";
 import { MeetingProvider } from "./contexts/MeetingContext";
 
 import NotFound from "./views/NotFound";
-// import RequireAuth from "./Components/RequireAuth";
+import RequireAuth from "./Components/RequireAuth";
 
 function App() {
-	const { user } = useUserContext();
+	const { user } = useAuth();
 
 	const routes = createBrowserRouter(
 		createRoutesFromElements(
@@ -34,19 +34,19 @@ function App() {
 				<Route path="login" element={<Login />} />
 
 				{/* Protected routes */}
-				{/* <Route element={<RequireAuth />}> */}
-				<Route path="meeting" element={<MeetingProvider />} />
+				<Route element={<RequireAuth />}>
+					<Route path="meeting" element={<MeetingProvider />} />
 
-				<Route path="profile" element={<ProfileProvider />}>
-					<Route
-						path="my-meetings"
-						element={<ProfileMeetings />}
-						loader={() => GetMeetings(user?.id)}
-					/>
-					<Route path="info" element={<ProfileInformation />} />
-					<Route path="contacts" element={<ProfileContacts />} />
+					<Route path="profile" element={<ProfileProvider />}>
+						<Route
+							path="my-meetings"
+							element={<ProfileMeetings />}
+							loader={() => GetMeetings(user?.id)}
+						/>
+						<Route path="info" element={<ProfileInformation />} />
+						<Route path="contacts" element={<ProfileContacts />} />
+					</Route>
 				</Route>
-				{/* </Route> */}
 
 				{/* Catch all */}
 				<Route path="*" element={<NotFound />} />

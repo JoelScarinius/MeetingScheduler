@@ -2,9 +2,6 @@
 import MeetingItem from "./Item";
 import { v4 as uuidv4 } from "uuid";
 
-// import { useUserContext } from "../../../contexts/LoginContext";
-// import { SERVER_URL } from "../../config";
-// import { useUpdateUserContext } from "../../contexts/LoginContext";
 import axios from "../../../api/axios";
 import { useLoaderData } from "react-router-dom";
 
@@ -22,7 +19,6 @@ export const GetMeetings = async userId => {
 
 //Component for Meeting overview
 export default function ProfileMeetings() {
-	// const { user } = useUserContext();
 	// const meeting = await GetMeetings(user);
 	const meetings = useLoaderData();
 	// const [meetings, setMeetings] = useState([{}]);

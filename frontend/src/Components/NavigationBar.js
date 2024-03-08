@@ -1,28 +1,28 @@
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useUserContext, useUpdateUserContext } from "../contexts/LoginContext";
+import useAuth from "../hooks/useAuth";
 import { useToastUpdate } from "../contexts/PageContext";
 
 //Component for navigation bar
 const NavigationBar = () => {
-	const { loginStatus, user } = useUserContext();
-	const { updateLogin } = useUpdateUserContext();
+	const { user, saveUser } = useAuth();
 	const { sendToastInfo } = useToastUpdate();
 
 	const iconSize = "27px";
 
 	const Logout = () => {
-		updateLogin(false);
-		sendToastInfo(`${user.firstName} logged out!`);
+		const loggedOutUserName = user.firstName;
+		saveUser(null);
+		sendToastInfo(`${loggedOutUserName} logged out!`);
 	};
 
 	return (
 		<div id="navigationBar">
 			<div id="left">
-				{loginStatus && (
+				{user && (
 					<>
-						<Link className="nav-buttons" to="/profile" type="button">
+						<Link className="nav-buttons" to="/profile/my-meetings" type="button">
 							<AccountCircleIcon
 								fontSize="large"
 								sx={{ color: "#daa520", height: iconSize }}
@@ -39,7 +39,7 @@ const NavigationBar = () => {
 					</>
 				)}
 			</div>
-			{loginStatus ? (
+			{user ? (
 				<div id="navButtons" className="flex-se right">
 					<span id="logged_in">{`${user.firstName} ${user.lastName}`}</span>
 
