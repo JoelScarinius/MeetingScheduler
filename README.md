@@ -4,6 +4,7 @@
 [![Deploy user microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/user.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/user.yaml)
 [![Deploy reactui microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/reactui.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/reactui.yaml)
 [![Deploy nginx microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/nginx.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/nginx.yaml)
+[![Deploy gateway microservice](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/gateway.yaml/badge.svg)](https://github.com/JoelScarinius/MeetingScheduler/actions/workflows/gateway.yaml)
 
 This is an OnlineMeetingSchedule tool inspired by Calendly.
 It is an easy way to book meetings, invite people and create event.
@@ -149,13 +150,13 @@ gh secret set KUBE_CONFIG --body $KUBE_CONFIG
 
 # Print the GitHub secrets
 gh secret list
+
+# Deploy the microservices
 gh workflow run "Deploy meeting microservice"
 gh workflow run "Deploy user microservice"
 gh workflow run "Deploy reactui microservice"
 gh workflow run "Deploy nginx microservice"
 gh workflow run "Deploy gateway microservice"
-```
-
 
 # Get the public IP address of the load balancer
 $LOAD_BALANCER_PUBLIC_IP = kubectl get service frontend -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
@@ -164,6 +165,10 @@ Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
 
 # Get the public IP address of the load balancer
 $LOAD_BALANCER_PUBLIC_IP = kubectl get service gateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+# Print the value of LOAD_BALANCER_PUBLIC_IP
+Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
+
+$LOAD_BALANCER_PUBLIC_IP = kubectl get service nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
 # Print the value of LOAD_BALANCER_PUBLIC_IP
 Write-Host "LOAD_BALANCER_PUBLIC_IP: $LOAD_BALANCER_PUBLIC_IP"
 
@@ -180,7 +185,7 @@ kubectl config current-context
 
 **Github Actions:**
 
-- Go to the `root` directory and run the following commands:
+- Go to the `root` directory and run the following commands to deploy the microservices:
 
 ```github
 gh workflow run "Deploy meeting microservice"
@@ -190,7 +195,23 @@ gh workflow run "Deploy nginx microservice"
 gh workflow run "Deploy gateway microservice"
 ```
 
-```kubectl
-kubectl describe pod 
-kubectl logs 
+**Running load tests:**
+
+```powershell
+# Run the following commands to delete old load test files and run the load tests locally using JMeter
+Remove-Item 'loadTest.csv' -ErrorAction Ignore
+Remove-Item 'loadTest_report' -Recurse -Force -ErrorAction Ignore
+Remove-Item 'jmeter.log' -ErrorAction Ignore
+& 'apache-jmeter-5.6.3\bin\jmeter' -n -t 'loadTest.jmx' -l 'loadTest.csv' -e -o 'loadTest_report'
+```
+
+Increase load on gateway by running the following command:
+
+```powershell
+
+while($true) {
+    $response = Invoke-WebRequest -Uri http://nginx -Method Get -UseBasicParsing
+    $status = $response.StatusCode
+    Write-Host $status -NoNewline
+}
 ```
