@@ -18,7 +18,7 @@ spec:
                   imagePullPolicy: IfNotPresent
                   env:
                       - name: PORT
-                        value: "5001"
+                        value: "80"
                   resources:
                       requests:
                           cpu: 126m
@@ -34,8 +34,7 @@ metadata:
 spec:
     selector:
         app: user
-    type: ClusterIP
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 5001
+          targetPort: 80
