@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDayViewUpdate } from "../../contexts/MeetingContext";
 import { v4 as uuidv4 } from "uuid";
-import APIHandler from "../../utils/api-methods";
+import axios from "../../api/axios";
 
 const fetchDayMeeting = async (date, monthToDisplay, yearToDisplay) => {
 	try {
 		const dateString = `${String(yearToDisplay).padStart(2, "0")}-${String(
 			monthToDisplay
 		).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
-		const api = new APIHandler();
-		const { data } = await api.GetData(`/meeting/${dateString}`);
+
+		const { data } = await axios.get(`/meeting/${dateString}`);
 
 		return data;
 	} catch (error) {

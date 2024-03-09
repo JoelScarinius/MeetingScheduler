@@ -1,18 +1,17 @@
 import React, { useRef } from "react";
 import { useProfileUpdate } from "../../../contexts/ProfileContext";
-import { useUpdateUserContext, useUserContext } from "../../../contexts/LoginContext";
+import useAuth from "../../../hooks/useAuth";
 import { useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { isAlpha, isEmail } from "validator";
-import APIHandler from "../../../utils/api-methods";
+import axios from "../../../api/axios";
 import { useToastUpdate } from "../../../contexts/PageContext";
 
 // Component for updateing user information
 const Update = () => {
-	const { user } = useUserContext();
+	const { user, saveUser } = useAuth();
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
 	const { showUpdateView } = useProfileUpdate();
-	const { saveUser } = useUpdateUserContext();
 
 	const iconRef = useRef();
 
@@ -43,7 +42,7 @@ const Update = () => {
 		newConfirmPassword,
 	} = inputValue;
 
-	console.log(inputValue);
+	// console.log(inputValue);
 
 	const hover = isHover => {
 		if (isHover) iconRef.current.style.color = "black";
@@ -98,9 +97,7 @@ const Update = () => {
 
 		// Send a POST request to update user information
 		try {
-			const api = new APIHandler();
-
-			const { data } = await api.PostData(
+			const { data } = await axios.post(
 				"/user/update",
 				{
 					newId: user.id,

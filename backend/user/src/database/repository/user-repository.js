@@ -61,6 +61,19 @@ class UserRepository {
 		const existingUser = await UserModel.findById(id);
 		return existingUser;
 	}
+
+	// get user by refresh token
+	async GetUserByToken(refreshToken) {
+		const existingUser = await UserModel.findOne({ refreshToken: refreshToken });
+		return existingUser;
+	}
+
+	// get user by id
+	async SaveRefreshToken(user, refreshToken) {
+		user.refreshToken = refreshToken;
+		const result = await existingUser.save();
+		return result;
+	}
 }
 
 module.exports = UserRepository;

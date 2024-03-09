@@ -1,86 +1,63 @@
 import React from "react";
-import ProfileContacts from "../Components/Profile/Contacts";
-import ProfileInformation from "../Components/Profile/Information";
-import ProfileTab from "../Components/Profile/ProfileTab";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
-import { useProfileUpdate, useTabContext } from "../contexts/ProfileContext";
-import { useUserContext } from "../contexts/LoginContext";
-import ProfileMeetings from "../Components/Profile/Meetings";
+import { useProfileUpdate } from "../contexts/ProfileContext";
+import useAuth from "../hooks/useAuth";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { Link, useLocation, Outlet } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
+import ProfileNav from "../Components/Profile/ProfileNav";
 
 const Profile = () => {
-	const { user, loginStatus } = useUserContext();
-	const tabContext = useTabContext();
+	const { user } = useAuth();
 	const { showUpdateView, isUpdateView } = useProfileUpdate();
+	const { pathname } = useLocation();
 
 	return (
-		<>
-			<div className="profile_container">
-				<div className="top_section">
-					{loginStatus && <span>{user.firstName + " " + user.lastName}</span>}
-					{tabContext === "info" && (
-						<>
-							{isUpdateView ? (
-								<div style={{ display: "flex" }}>
-									<div
-										onClick={() => {
-											showUpdateView(false);
-										}}
-										className="icon"
-									>
-										<ClearIcon titleAccess="Exit" />
-									</div>
-								</div>
-							) : (
+		<div className="profile_container">
+			<div className="top_section">
+				{user && <span>{user.firstName + " " + user.lastName}</span>}
+				{pathname === "/profile/my-meetings" && (
+					<div className="icon">
+						<Link to="/meeting" type="button">
+							<AddIcon titleAccess="Add Meeting" />
+						</Link>
+					</div>
+				)}
+				{pathname === "/profile/info" && (
+					<>
+						{isUpdateView ? (
+							<div style={{ display: "flex" }}>
 								<div
 									onClick={() => {
-										showUpdateView(true);
+										showUpdateView(false);
 									}}
 									className="icon"
 								>
-									<EditIcon titleAccess="Edit" />
+									<ClearIcon titleAccess="Exit" />
 								</div>
-							)}
-						</>
-					)}
-					{tabContext === "contacts" && (
-						<div className="icon">
-							<PersonAddSharpIcon />
-						</div>
-					)}
-					{tabContext === "my_meetings" && (
-						<div className="icon">
-							<Link to="/meeting" type="button">
-								<AddIcon titleAccess="Add Meeting" />
-							</Link>
-						</div>
-					)}
-				</div>
-				<div className="tab_area">
-					<ProfileTab
-						tab_text="My Meetings"
-						is_active={tabContext === "my_meetings"}
-						tab_name="my_meetings"
-					/>
-					<ProfileTab
-						tab_text="Profile information"
-						is_active={tabContext === "info"}
-						tab_name="info"
-					/>
-					<ProfileTab
-						tab_text="Contacts"
-						is_active={tabContext === "contacts"}
-						tab_name="contacts"
-					/>
-				</div>
-				{tabContext === "info" && <ProfileInformation />}
-				{tabContext === "contacts" && <ProfileContacts />}
-				{tabContext === "my_meetings" && <ProfileMeetings />}
+							</div>
+						) : (
+							<div
+								onClick={() => {
+									showUpdateView(true);
+								}}
+								className="icon"
+							>
+								<EditIcon titleAccess="Edit" />
+							</div>
+						)}
+					</>
+				)}
+				{pathname === "/profile/contacts" && (
+					<div className="icon">
+						<PersonAddSharpIcon />
+					</div>
+				)}
 			</div>
-		</>
+			<ProfileNav />
+			<Outlet />
+		</div>
 	);
 };
 export default Profile;

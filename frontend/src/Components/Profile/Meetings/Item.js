@@ -6,17 +6,14 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useEffect } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../../../contexts/LoginContext";
-// import { useUpdateUserContext } from "../../contexts/LoginContext";
-import APIHandler from "../../../utils/api-methods";
+import useAuth from "../../../hooks/useAuth";
+import axios from "../../../api/axios";
 import { useToastUpdate } from "../../../contexts/PageContext";
-
-const api = new APIHandler();
 
 const fetchUsers = async () => {
 	try {
 		const listOfUsers = [];
-		const { data } = await api.GetData("user/users");
+		const { data } = await axios.get("user/users");
 		data.forEach(user => {
 			if (user.firstName) {
 				listOfUsers.push(user);
@@ -31,7 +28,7 @@ const fetchUsers = async () => {
 
 const deleteMeeting = async meeting => {
 	try {
-		const { data } = await api.delete(`/meeting/delete/${meeting._id}`);
+		const { data } = await axios.delete(`/meeting/delete/${meeting._id}`);
 		return data.message;
 	} catch (error) {
 		console.log("Error Deleting Meeting");
@@ -40,9 +37,8 @@ const deleteMeeting = async meeting => {
 
 //Component for meeting
 const MeetingItem = ({ meeting }) => {
-	// const { api } = useUpdateUserContext();
 	const { sendToastSuccess } = useToastUpdate();
-	const { user } = useUserContext();
+	const { user } = useAuth();
 	const navigate = useNavigate();
 	const [detailViewState, setDetailViewState] = useState(false);
 
@@ -82,7 +78,7 @@ const MeetingItem = ({ meeting }) => {
 			participants.forEach(participant => {
 				participantList.push(participant._id);
 			});
-			const { data } = await api.PostData(
+			const { data } = await axios.post(
 				"/meeting/update",
 				{
 					meetingID: meeting._id,

@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import "./css/App.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -9,15 +8,13 @@ import { DateProvider } from "./contexts/DateContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <DateProvider>
-                <LoginProvider>
-                    <App />
-                </LoginProvider>
-            </DateProvider>
-        </BrowserRouter>
-    </React.StrictMode>
+	<React.StrictMode>
+		<DateProvider>
+			<LoginProvider>
+				<App />
+			</LoginProvider>
+		</DateProvider>
+	</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

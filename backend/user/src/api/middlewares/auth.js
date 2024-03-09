@@ -3,9 +3,8 @@ const { AuthenticationError } = require("../../utils/error/app-errors");
 
 module.exports = async (req, res, next) => {
 	try {
-		const isAuthorized = await ValidateSignature(req);
+		const isAuthorized = await ValidateSignature(req, next);
 		if (!isAuthorized) throw new AuthenticationError("Not authorized.");
-
 		next();
 	} catch (error) {
 		next(error);

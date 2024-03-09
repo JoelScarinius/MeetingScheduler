@@ -1,38 +1,24 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-import "react-toastify/dist/ReactToastify.css";
-// import { SERVER_URL } from "../config/index";
-import { useUpdateUserContext } from "../contexts/LoginContext";
+import { Link, Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import { isAlpha, isEmail } from "validator";
-import APIHandler from "../utils/api-methods";
+import axios from "../api/axios";
 import { useToastUpdate } from "../contexts/PageContext";
-
-const api = new APIHandler();
 
 //Component for signup
 const Signup = () => {
-	const navigate = useNavigate();
 	const { sendToastSuccess, sendToastError } = useToastUpdate();
+	const { saveUser, isDataSaved } = useAuth();
 
-	const [inputValue, setInputValue] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		confirmEmail: "",
-		password: "",
-		confirmPassword: "",
-	});
-	const { firstName, lastName, email, confirmEmail, password, confirmPassword } = inputValue;
-	const { saveUser, updateLogin, setJustSignedUp, setAuthToken } = useUpdateUserContext();
+	const goTo = "/profile/info";
 
-	const handleOnChange = e => {
-		const { name, value } = e.target;
-		setInputValue({
-			...inputValue,
-			[name]: value,
-		});
-	};
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [email, setEmail] = useState("");
+	const [confirmEmail, setConfirmEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
 
 	//Handle all inputs from user
 	const handleSubmit = async e => {
@@ -64,134 +50,141 @@ const Signup = () => {
 
 		try {
 			console.log(firstName, lastName, email, password);
-			const { data } = await api.PostData(
+			const { data } = await axios.post(
 				"/user/signup",
 				{ firstName, lastName, email, password },
 				{ withCredentials: true }
 			);
-			// Set the token in local storage
-			await setAuthToken(data.token);
+			console.log(data);
+			// setAccessToken(data.token);
 			sendToastSuccess(data.message);
-			// updateLogin(true);
-			setJustSignedUp(true);
 			saveUser(data.user);
-			setTimeout(() => {
-				navigate("/profile");
-			}, 2000);
+			setIsLoggedIn(true);
 		} catch (error) {
 			console.error(error);
 			sendToastError(error.response.data);
 		}
-		setInputValue({
-			...inputValue,
-			password: "",
-			confirmPassword: "",
-		});
+		setPassword("");
+		setConfirmPassword("");
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="form_container">
-			<div>
-				<label htmlFor="name" className="input_label">
-					Enter your first name
-					<b>*</b>
+		<>
+			<form onSubmit={handleSubmit} className="form_container">
+				<label htmlFor="firstName" className="input_label">
+					<span>
+						Enter your first name
+						<b>*</b>
+					</span>
+					<input
+						id="firstName"
+						className="input_margin"
+						type="text"
+						name="firstName"
+						placeholder="FirstName"
+						autoComplete="firstName"
+						value={firstName}
+						onChange={e => setFirstName(e.target.value)}
+					/>
 				</label>
-			</div>
-			<input
-				className="input_margin"
-				type="text"
-				name="firstName"
-				placeholder="FirstName"
-				autoComplete="firstName"
-				value={firstName}
-				onChange={handleOnChange}
-			/>
-			<div>
-				<label htmlFor="name" className="input_label">
-					Enter your last name
-					<b>*</b>
-				</label>
-			</div>
-			<input
-				className="input_margin"
-				type="text"
-				name="lastName"
-				placeholder="LastName"
-				autoComplete="lastName"
-				value={lastName}
-				onChange={handleOnChange}
-			/>
-			<div>
-				<label htmlFor="email" className="input_label">
-					Enter your email
-					<b>*</b>
-				</label>
-			</div>
-			<input
-				className="input_margin"
-				type="email"
-				name="email"
-				placeholder="Email"
-				autoComplete="Email"
-				value={email}
-				onChange={handleOnChange}
-			/>
-			<div>
-				<label htmlFor="Confirm email" className="input_label">
-					Confirm your email
-					<b>*</b>
-				</label>
-			</div>
-			<input
-				className="input_margin"
-				type="email"
-				name="confirmEmail"
-				placeholder="Confirm email"
-				autoComplete="Confirm email"
-				value={confirmEmail}
-				onChange={handleOnChange}
-			/>
-			<div>
-				<label htmlFor="password" className="input_label">
-					Enter your password
-					<b>*</b>
-				</label>
-			</div>
-			<input
-				className="input_margin"
-				type="password"
-				name="password"
-				placeholder="Password"
-				autoComplete="Password"
-				value={password}
-				onChange={handleOnChange}
-			/>
-			<div>
-				<label htmlFor="Confirm password" className="input_label">
-					Confirm your password
-					<b>*</b>
-				</label>
-			</div>
 
-			<input
-				className="input_margin"
-				type="password"
-				name="confirmPassword"
-				placeholder="Confirm password"
-				autoComplete="Confirm Password"
-				value={confirmPassword}
-				onChange={handleOnChange}
-			/>
-			<button id="confirmation_btn" className="links" type="submit">
-				Sign up
-			</button>
-			<span>
-				{"Already have an account? "}
-				<Link className="links" id="signUp-signIn" to={"/login"}>
-					Login
-				</Link>
-			</span>
-		</form>
+				<label htmlFor="lastName" className="input_label">
+					<span>
+						Enter your last name
+						<b>*</b>
+					</span>
+					<input
+						id="lastName"
+						className="input_margin"
+						type="text"
+						name="lastName"
+						placeholder="LastName"
+						autoComplete="lastName"
+						value={lastName}
+						onChange={e => setLastName(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="email" className="input_label">
+					<span>
+						Enter your email
+						<b>*</b>
+					</span>
+					<input
+						id="email"
+						className="input_margin"
+						type="email"
+						name="email"
+						placeholder="Email"
+						autoComplete="Email"
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="confirmEmail" className="input_label">
+					<span>
+						Confirm your email
+						<b>*</b>
+					</span>
+					<input
+						id="confirmEmail"
+						className="input_margin"
+						type="email"
+						name="confirmEmail"
+						placeholder="Confirm email"
+						autoComplete="Confirm email"
+						value={confirmEmail}
+						onChange={e => setConfirmEmail(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="password" className="input_label">
+					<span>
+						Enter your password
+						<b>*</b>
+					</span>
+					<input
+						id="password"
+						className="input_margin"
+						type="password"
+						name="password"
+						placeholder="Password"
+						autoComplete="Password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+					/>
+				</label>
+
+				<label htmlFor="confirmPassword" className="input_label">
+					<span>
+						Confirm your password
+						<b>*</b>
+					</span>
+					<input
+						id="confirmPassword"
+						className="input_margin"
+						type="password"
+						name="confirmPassword"
+						placeholder="Confirm password"
+						autoComplete="Confirm Password"
+						value={confirmPassword}
+						onChange={e => setConfirmPassword(e.target.value)}
+					/>
+				</label>
+
+				<button id="confirmation_btn" className="links" type="submit">
+					Sign up
+				</button>
+				<span>
+					{"Already have an account? "}
+					<Link className="links" id="signUp-signIn" to="/login">
+						Login
+					</Link>
+				</span>
+			</form>
+			{isDataSaved && isLoggedIn && <Navigate to={goTo} replace />}
+		</>
 	);
 };
 

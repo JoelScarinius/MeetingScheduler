@@ -9,9 +9,13 @@
 * {
 	box-sizing: border-box;
 }
-* > a {
-	font-size: 0;
+a {
+	text-decoration: none;
+	color: white;
 }
+/* * > a {
+	font-size: 0;
+} */
 
 body {
 	font-family: "Raleway", sans-serif;
@@ -197,8 +201,11 @@ input.input_margin {
 
 .input_label {
 	font-size: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
-.input_label > b {
+.input_label > span > b {
 	color: red;
 }
 
@@ -395,7 +402,9 @@ input.input_margin {
 }
 
 .titles {
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .titles > h1 {

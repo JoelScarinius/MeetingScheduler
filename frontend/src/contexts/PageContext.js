@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavigationBar from "../Components/NavigationBar";
+import { Outlet } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 const ToastContext = React.createContext();
 
@@ -12,6 +14,8 @@ export function useToastUpdate() {
 // Context provider component for managing application
 // messages displayed in a toast container
 export const PageProvider = ({ children }) => {
+	// const { pathname } = useLocation();
+
 	function sendToastSuccess(message) {
 		toast.success(message, {
 			position: "bottom-right",
@@ -32,13 +36,15 @@ export const PageProvider = ({ children }) => {
 
 	return (
 		<ToastContext.Provider value={{ sendToastError, sendToastSuccess, sendToastInfo }}>
-			{window.location.pathname === "/" && <NavigationBar />}
-			{window.location.pathname === "/login" && <NavigationBar />}
-			{window.location.pathname === "/signup" && <NavigationBar />}
-			{window.location.pathname === "/meeting" && <NavigationBar />}
-			{window.location.pathname === "/profile" && <NavigationBar />}
+			{/* {pathname === "/" && <NavigationBar />}
+			{pathname === "/login" && <NavigationBar />}
+			{pathname === "/signup" && <NavigationBar />}
+			{pathname === "/meeting" && <NavigationBar />}
+			{pathname === "/profile" && <NavigationBar />} */}
+			<NavigationBar />
 			<div className="page">
-				{children}
+				{/* {children} */}
+				<Outlet />
 				<ToastContainer />
 			</div>
 		</ToastContext.Provider>

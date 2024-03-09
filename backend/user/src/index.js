@@ -1,5 +1,5 @@
 const express = require("express");
-const { PORT } = require("./config");
+const { USER_SERVICE_PORT } = require("./config");
 const { databaseConnection } = require("./database");
 const expressApp = require("./express-app");
 const { CreateChannel } = require("./utils");
@@ -11,6 +11,7 @@ const StartServer = async () => {
 	await databaseConnection();
 	const channel = await CreateChannel();
 	await expressApp(app);
+
 	// Catch application errors and deliver to logger
 	app.use((error, req, res, next) => {
 		const STATUS_CODE = error.statusCode || 500;
@@ -18,26 +19,23 @@ const StartServer = async () => {
 
 		return res.status(STATUS_CODE).json(data);
 	});
+
 	// Set timestamp "startupTimestamp" of when the microservice started
 	const startupTimestamp = new Date();
-	console.log(
-		`Set startupTimestamp to ${startupTimestamp.toLocaleTimeString(
-			"sv-SE"
-		)}`
-	);
+	console.log(`Set startupTimestamp to ${startupTimestamp.toLocaleTimeString("sv-SE")}`);
+
 	// This is a normal HTTP Get route (path) for the microservice (part of the microservice's functionality)
 	app.get("/", async (req, res) => {
 		res.sendStatus(200);
 	});
+
 	// Respond to HTTP GET requests on route (path) "/healthz" to indicate "alive" (this is what the livenessProbe checks)
 	app.get("/healthz", async (req, res) => {
 		const current = new Date();
 		console.log(
 			`Route /healthz hit at time ${current.toLocaleTimeString(
 				"sv-SE"
-			)}, Elapsed seconds since startup: ${
-				(current - startupTimestamp) / 1000
-			}`
+			)}, Elapsed seconds since startup: ${(current - startupTimestamp) / 1000}`
 		);
 
 		if (current - startupTimestamp < HEALTHZ_TIME) {
@@ -48,6 +46,7 @@ const StartServer = async () => {
 			res.sendStatus(500); // If not within 40 seconds of the microservice's "startupTimestamp", return status "500" (internal server error)
 		}
 	});
+
 	// Write file "/tmp/started" to indicate "started" (this is what the startupProbe checks)
 	try {
 		fs.writeFileSync("/tmp/started", "started");
@@ -56,11 +55,10 @@ const StartServer = async () => {
 		console.error(err);
 	}
 
-	app.listen(PORT, () => {
-		console.log(`listening to port ${PORT}`);
+	app.listen(+USER_SERVICE_PORT, () => {
+		console.log(`Listening to port ${USER_SERVICE_PORT}`);
 	})
-
-		.on("error", (err) => {
+		.on("error", err => {
 			console.log(err);
 			process.exit();
 		})

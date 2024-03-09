@@ -21,7 +21,7 @@ module.exports = (app, channel) => {
 			// Create a new meeting in the database
 			const meeting = await service.CreateMeeting(meetingData);
 
-			const message = `Meeting: ${meeting.title} was successfully created!`;
+			const message = `Meeting: ${meeting.title} was created!`;
 			PrintFormattedMessage(message);
 
 			// Send a success response with the created meeting data
@@ -65,7 +65,7 @@ module.exports = (app, channel) => {
 			// Update the meeting with the provided id in the database
 			const updatedMeeting = await service.UpdateMeeting(meetingData);
 
-			const message = `Meeting: ${updatedMeeting.title} was successfully updated!`;
+			const message = `Meeting: ${updatedMeeting.title} was updated!`;
 			PrintFormattedMessage(message);
 			// Send a success response with the updated meeting data
 			res.status(200).json({
@@ -83,7 +83,7 @@ module.exports = (app, channel) => {
 			const meetingId = req.params.meetingId;
 			const deletedMeeting = await service.DeleteMeeting(meetingId);
 
-			const message = `Meeting: ${deletedMeeting.title} was successfully deleted!`;
+			const message = `Meeting: ${deletedMeeting.title} was deleted!`;
 			PrintFormattedMessage(message);
 			res.status(200).json({
 				message,

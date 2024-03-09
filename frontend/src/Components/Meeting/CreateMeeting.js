@@ -3,17 +3,16 @@ import { Autocomplete, TextField } from "@mui/material";
 
 // import { SERVER_URL } from "../../config";
 import ConfirmButton from "../ConfirmButton";
-import { useUserContext } from "../../contexts/LoginContext";
+import useAuth from "../../hooks/useAuth";
+
 import { useDayView } from "../../contexts/MeetingContext";
 import { useDateContext } from "../../contexts/DateContext";
-// import { useUpdateUserContext } from "../../contexts/LoginContext";
-import APIHandler from "../../utils/api-methods";
-const api = new APIHandler();
+import axios from "../../api/axios";
 
 const fetchUsers = async () => {
 	try {
 		const listOfUsers = [];
-		const { data } = await api.GetData("/user/users");
+		const { data } = await axios.get("/user/users");
 		data.forEach(user => {
 			if (user.firstName) {
 				listOfUsers.push(user);
@@ -27,8 +26,7 @@ const fetchUsers = async () => {
 };
 
 const CreateMeeting = () => {
-	// const { api } = useUpdateUserContext();
-	const { user } = useUserContext();
+	const { user } = useAuth();
 	const { date, dayString, clickedMonth, yearToDisplay } = useDayView();
 	const { getDate } = useDateContext();
 	const dateString = `${yearToDisplay}-${clickedMonth.toString().padStart(2, "0")}-${date
@@ -58,7 +56,7 @@ const CreateMeeting = () => {
 				participantList.push(participant._id);
 			});
 
-			await api.PostData("/meeting/create", {
+			await axios.post("/meeting/create", {
 				body: JSON.stringify({
 					organizer: user._id,
 					participants: participantList,

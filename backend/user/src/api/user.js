@@ -1,6 +1,7 @@
 const UserService = require("../services/user-service");
 const { SubscribeMessage, PrintFormattedMessage } = require("../utils");
 const UserAuth = require("./middlewares/auth");
+// const cookie = require("cookie-parser");
 
 module.exports = (app, channel) => {
 	const service = new UserService();
@@ -11,13 +12,14 @@ module.exports = (app, channel) => {
 	// Sign up user
 	app.post("/signup", async (req, res, next) => {
 		try {
+			console.log("I run");
+			console.log(req);
 			const userInput = req.body;
-			const { user, token } = await service.SignUp(userInput);
+			const { user } = await service.SignUp(userInput);
 			// Send a success response with user information
 			res.status(201).json({
 				message: `${user.firstName} signed in!`,
 				user,
-				token,
 			});
 		} catch (error) {
 			next(error);
@@ -28,14 +30,22 @@ module.exports = (app, channel) => {
 	app.post("/login", async (req, res, next) => {
 		try {
 			const { email, password } = req.body;
-			const { existingUser, token } = await service.LogIn({
+			const { existingUser, accessToken, refreshToken } = await service.LogIn({
 				email,
 				password,
 			});
+
+			res.cookie("jwt", refreshToken, {
+				httpOnly: true,
+				secure: true,
+				sameSite: "None",
+				maxAge: 24 * 60 * 60 * 1000,
+			});
+
 			res.status(200).json({
 				existingUser,
-				token,
-				message: `${existingUser.firstName} logged in successfully!`,
+				accessToken,
+				message: `${existingUser.firstName} logged in!`,
 			});
 		} catch (error) {
 			next(error);
@@ -68,25 +78,38 @@ module.exports = (app, channel) => {
 		try {
 			const userInput = req.body;
 			const user = await service.UpdateUser(userInput);
-			PrintFormattedMessage(
-				`${user.firstName}'s personal info was updated.`
-			);
+			PrintFormattedMessage(`${user.firstName}'s personal info was updated.`);
 			res.status(200).json({
 				user,
-				message: "User updated successfully",
+				message,
 			});
 		} catch (error) {
 			next(error);
 		}
 	});
 
-	app.post("/", async (req, res, next) => {
+	// app.post("/", async (req, res, next) => {
+	// 	try {
+	// 		await UserAuth(req, res, next);
+	// 		const message = `${req.body.user} is still logged in.`;
+	// 		PrintFormattedMessage(message);
+	// 		res.status(200).json({ message });
+	// 	} catch (error) {
+	// 		next(error);
+	// 	}
+	// });
+
+	// User refresh
+	app.post("/refresh", async (req, res, next) => {
 		try {
-			await UserAuth(req, res, next);
-			// console.log("User is still logged in.");
-			const message = `${req.body.user} is still logged in.`;
+			const cookies = req.cookies;
+
+			const { accessToken, _id } = await service.HandleRefresh(cookies);
+			const user = await service.GetUser(_id);
+
+			const message = `${user.firstName} is still logged in.`;
 			PrintFormattedMessage(message);
-			res.status(200).json({ message: message });
+			res.status(200).json({ message, accessToken, user });
 		} catch (error) {
 			next(error);
 		}

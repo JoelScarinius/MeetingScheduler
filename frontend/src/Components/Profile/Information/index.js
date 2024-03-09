@@ -1,15 +1,15 @@
 import React from "react";
-import { useUserContext } from "../../../contexts/LoginContext";
+import useAuth from "../../../hooks/useAuth";
 import PersonalDetails from "./Details";
 import { useProfileUpdate } from "../../../contexts/ProfileContext";
 import Update from "./Update";
 
 //Component for Profile Information
 const ProfileInformation = () => {
-	const { loginStatus } = useUserContext();
+	const { user } = useAuth();
 	const { isUpdateView } = useProfileUpdate();
 
-	return loginStatus && (isUpdateView ? <Update /> : <PersonalDetails />);
+	return user && (isUpdateView ? <Update /> : <PersonalDetails />);
 };
 
 export default ProfileInformation;

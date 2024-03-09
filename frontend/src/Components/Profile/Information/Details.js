@@ -1,10 +1,10 @@
 import React from "react";
-import { useUserContext } from "../../../contexts/LoginContext";
+import useAuth from "../../../hooks/useAuth";
 import TypingEffect from "../../TypingEffect";
 
 //Component for User information
 const PersonalDetails = () => {
-	const { user } = useUserContext();
+	const { user } = useAuth();
 
 	return (
 		<div className="user_information">

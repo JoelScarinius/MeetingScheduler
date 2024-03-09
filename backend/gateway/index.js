@@ -1,20 +1,39 @@
 const express = require("express");
 const cors = require("cors");
-const proxy = require("express-http-proxy");
+const { createProxyMiddleware } = require("http-proxy-middleware");
+require("dotenv").config();
+// const proxy = require("express-http-proxy");
+const cookieParser = require("cookie-parser");
+
 const app = express();
+
+const { CLIENT_IP, GATEWAY_PORT, NODE_ENV } = process.env;
+
+const userProxy = createProxyMiddleware({
+	target: `http://${NODE_ENV === "dev" ? "localhost" : "user"}:${+GATEWAY_PORT + 1}`,
+	changeOrigin: true,
+});
+const meetingProxy = createProxyMiddleware({
+	target: `http://${NODE_ENV === "dev" ? "localhost" : "meeting"}:${+GATEWAY_PORT + 2}`,
+	changeOrigin: true,
+});
+
+const CLIENT_PROD_ORIGIN = `http://${CLIENT_IP}:3000`;
 
 app.use(
 	cors({
-		origin: ["http://108.141.158.127:3000", "http://localhost:3000"],
+		origin: [CLIENT_PROD_ORIGIN, "http://localhost:3000"],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
 	})
 );
 
 app.use(express.json());
-app.use("/user", proxy("http://user:5001"));
-app.use("/meeting", proxy("http://meeting:5002"));
+app.use(cookieParser());
 
-app.listen(5000, () => {
-	console.log("Gateway is Listening to Port 5000");
+app.use("/user", userProxy);
+app.use("/meeting", meetingProxy);
+
+app.listen(+GATEWAY_PORT, () => {
+	console.log(`Gateway is listening to Port ${GATEWAY_PORT}`);
 });
