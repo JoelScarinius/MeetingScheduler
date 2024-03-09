@@ -49,12 +49,12 @@ const StartServer = async () => {
 		}
 	});
 	// Write file "/tmp/started" to indicate "started" (this is what the startupProbe checks)
-	try {
-		fs.writeFileSync("/tmp/started", "started");
-		console.log("Wrote file /tmp/started.");
-	} catch (err) {
-		console.error(err);
-	}
+	// try {
+	// 	fs.writeFileSync("/tmp/started", "started");
+	// 	console.log("Wrote file /tmp/started.");
+	// } catch (err) {
+	// 	console.error(err);
+	// }
 
 	app.listen(PORT, () => {
 		console.log(`listening to port ${PORT}`);
