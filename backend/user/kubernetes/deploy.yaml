@@ -18,7 +18,7 @@ spec:
                   imagePullPolicy: IfNotPresent
                   env:
                       - name: PORT
-                        value: "80"
+                        value: "5001"
                   resources:
                       requests:
                           cpu: 126m
