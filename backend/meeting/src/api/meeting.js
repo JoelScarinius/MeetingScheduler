@@ -1,5 +1,9 @@
 const MeetingService = require("../services/meeting-service");
-const { SubscribeMessage, ValidateMeetingInput, PrintFormattedMessage } = require("../utils");
+const {
+	SubscribeMessage,
+	ValidateMeetingInput,
+	PrintFormattedMessage,
+} = require("../utils");
 const UserAuth = require("./middlewares/auth");
 
 module.exports = (app, channel) => {
@@ -87,5 +91,9 @@ module.exports = (app, channel) => {
 		} catch (error) {
 			next(error);
 		}
+	});
+
+	app.get("/whoami", (req, res, next) => {
+		return res.status(200).json({ msg: "/meeting : I am Meeting Service" });
 	});
 };
