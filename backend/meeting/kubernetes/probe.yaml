@@ -10,7 +10,7 @@ spec:
           image: $CONTAINER_REGISTRY_LOGIN_SERVER/meeting:$VERSION
           imagePullPolicy: IfNotPresent
           ports:
-              - containerPort: 5002
+              - containerPort: 80
           startupProbe:
               exec:
                   command:
@@ -21,14 +21,14 @@ spec:
               failureThreshold: 10
           readinessProbe:
               tcpSocket:
-                  port: 5002
+                  port: 80
               initialDelaySeconds: 5
               periodSeconds: 2
               failureThreshold: 10
           livenessProbe:
               httpGet:
                   path: /healthz
-                  port: 5002
+                  port: 80
               initialDelaySeconds: 25
               periodSeconds: 2
               failureThreshold: 6
