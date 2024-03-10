@@ -12,6 +12,7 @@ const {
 	ValidationError,
 	AuthenticationError,
 } = require("../utils/error/app-errors");
+const jwt = require("jsonwebtoken");
 
 // IMPORT ACCESS_TOKEN_SECRET AND REFRESH_TOKEN_SECRET
 
