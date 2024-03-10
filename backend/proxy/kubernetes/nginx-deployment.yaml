@@ -13,7 +13,7 @@ spec:
                 app: nginx
         spec:
             containers:
-                - name: nginx
+                - name: nginx-container
                   image: $CONTAINER_REGISTRY_LOGIN_SERVER/proxy:$VERSION
                   imagePullPolicy: IfNotPresent
                   ports:
@@ -29,12 +29,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    name: nginx
     labels:
         app: nginx
 spec:
     ports:
-        - name: nginx
+        - name: http
           port: 80
           targetPort: 80
     selector:

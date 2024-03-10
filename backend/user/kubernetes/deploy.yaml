@@ -16,6 +16,8 @@ spec:
                 - name: user
                   image: $CONTAINER_REGISTRY_LOGIN_SERVER/user:$VERSION
                   imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5001
                   env:
                       - name: PORT
                         value: "5001"
