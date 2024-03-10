@@ -1,9 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const { meeting } = require("./api");
-const { CreateChannel } = require("./utils");
 
-module.exports = async (app) => {
+module.exports = async (app, channel) => {
 	app.use(express.json());
 	app.use(
 		cors({
@@ -12,9 +11,7 @@ module.exports = async (app) => {
 			credentials: true,
 		})
 	);
-	app.use(express.static(__dirname + "/public"));
-
-	const channel = await CreateChannel();
+	// app.use(express.static(__dirname + "/public"));
 
 	meeting(app, channel);
 	// error handling
