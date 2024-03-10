@@ -33,10 +33,11 @@ const StartServer = async () => {
 	app.get("/healthz", async (req, res) => {
 		// Replace with your actual checks
 		const isDatabaseConnected = await databaseConnection();
+		const isRabbitMQConnected = await CreateChannel();
 
 		const timestamp = new Date();
 
-		if (isDatabaseConnected) {
+		if (isDatabaseConnected && isRabbitMQConnected) {
 			res.status(200).json({
 				status: "OK",
 				timestamp: timestamp.toISOString(),
@@ -47,6 +48,7 @@ const StartServer = async () => {
 				timestamp: timestamp.toISOString(),
 				errors: {
 					database: isDatabaseConnected ? "OK" : "Not connected",
+					rabbitMQ: isRabbitMQConnected ? "OK" : "Not connected",
 				},
 			});
 		}
