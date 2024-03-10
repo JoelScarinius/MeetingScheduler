@@ -11,6 +11,7 @@ const StartServer = async () => {
 	await databaseConnection();
 	const channel = await CreateChannel();
 	expressApp(app, channel);
+
 	// Catch application errors and deliver to logger
 	app.use((error, req, res, next) => {
 		const STATUS_CODE = error.statusCode || 500;
@@ -25,6 +26,12 @@ const StartServer = async () => {
 			"sv-SE"
 		)}`
 	);
+
+	// This is a normal HTTP Get route (path) for the microservice (part of the microservice's functionality)
+	app.get("/ready", async (req, res) => {
+		res.sendStatus(200);
+	});
+
 	// Respond to HTTP GET requests on route (path) "/healthz" to indicate "alive" (this is what the livenessProbe checks)
 	app.get("/healthz", async (req, res) => {
 		const current = new Date();

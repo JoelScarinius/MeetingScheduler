@@ -4,7 +4,6 @@ const { databaseConnection } = require("./database");
 const expressApp = require("./express-app");
 const { CreateChannel } = require("./utils");
 const fs = require("node:fs");
-
 const HEALTHZ_TIME = 40000; // 40000 milliseconds
 
 const StartServer = async () => {
@@ -12,6 +11,7 @@ const StartServer = async () => {
 	await databaseConnection();
 	const channel = await CreateChannel();
 	await expressApp(app);
+
 	// Catch application errors and deliver to logger
 	app.use((error, req, res, next) => {
 		const STATUS_CODE = error.statusCode || 500;
@@ -27,7 +27,7 @@ const StartServer = async () => {
 		)}`
 	);
 	// This is a normal HTTP Get route (path) for the microservice (part of the microservice's functionality)
-	app.get("/", async (req, res) => {
+	app.get("/ready", async (req, res) => {
 		res.sendStatus(200);
 	});
 	// Respond to HTTP GET requests on route (path) "/healthz" to indicate "alive" (this is what the livenessProbe checks)
