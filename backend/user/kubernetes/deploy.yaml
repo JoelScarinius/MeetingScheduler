@@ -1,20 +1,3 @@
-#
-# -This YAML  manifest file contains two kubernetes resources for the user microservice.
-#  - One Deployment, and one Service for the Deployment's Pods.
-#  - Notice how multiple resources can be defined in one YAML file by separating them with 3 dashes ---
-#
-# Note!
-# The placeholders below have to be replaced before deploying the manifest to kubernetes:
-#   $CONTAINER_REGISTRY_LOGIN_SERVER
-#   $VERSION
-#
-# This can be done by creating environment variables in Linux as below:
-#   export CONTAINER_REGISTRY_LOGIN_SERVER=<your-container-registry>
-#   export VERSION=<the-version-to-deploy>
-#
-# Then replace the placeholders and deploy the manifest using the Linux command below:
-#   envsubst < ./scripts/kubernetes/deploy.yaml | kubectl apply -f -
-#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,14 +18,14 @@ spec:
                   imagePullPolicy: IfNotPresent
                   env:
                       - name: PORT
-                        value: "5001"
+                        value: "80"
                   resources:
                       requests:
                           cpu: 126m
-                          memory: 126Mi
+                          memory: 512Mi
                       limits:
                           cpu: 256m
-                          memory: 256Mi
+                          memory: 1024Mi
 ---
 apiVersion: v1
 kind: Service
@@ -51,8 +34,7 @@ metadata:
 spec:
     selector:
         app: user
-    type: ClusterIP
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 5001
+          targetPort: 80

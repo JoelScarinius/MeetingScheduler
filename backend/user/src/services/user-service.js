@@ -6,7 +6,11 @@ const {
 	ValidatePassword,
 	ValidateUserInput,
 } = require("../utils");
-const { APIError, NotFoundError, ValidationError } = require("../utils/error/app-errors");
+const {
+	APIError,
+	NotFoundError,
+	ValidationError,
+} = require("../utils/error/app-errors");
 
 class UserService {
 	constructor() {
@@ -17,19 +21,18 @@ class UserService {
 		const existingUser = await this.repository.FindUser(email);
 
 		if (!existingUser) throw new NotFoundError("User not found.");
-
 		const validPassword = await ValidatePassword(
 			password,
 			existingUser.password,
 			existingUser.salt
 		);
-		if (!validPassword) throw new ValidationError("Incorrect email or password.");
+		if (!validPassword)
+			throw new ValidationError("Incorrect email or password.");
 
 		const token = await GenerateSignature({
 			email: existingUser.email,
 			_id: existingUser._id,
 		});
-
 		return { existingUser, token };
 	}
 
@@ -37,7 +40,9 @@ class UserService {
 		const existingUser = await this.repository.FindUser(email);
 
 		if (existingUser)
-			throw new ValidationError("A user with this email already exist. Try to log in.");
+			throw new ValidationError(
+				"A user with this email already exist. Try to log in."
+			);
 
 		await ValidateUserInput("SIGNUP", {
 			newFirstName: firstName,
@@ -63,7 +68,8 @@ class UserService {
 			_id: user._id,
 		});
 
-		if (!user) throw new APIError("Something went wrong during user sign up.");
+		if (!user)
+			throw new APIError("Something went wrong during user sign up.");
 		if (!token) throw new APIError("Unable to generate JSON web token.");
 
 		return { user, token };
@@ -125,13 +131,6 @@ class UserService {
 		if (!existingUser) throw new NotFoundError("No user found.");
 		return existingUser;
 	}
-
-	// //get user
-	// async AuthStatus(token) {
-	// 	const existingUser = await ValidatePassword();
-	// 	if (!existingUser) throw new NotFoundError("No user found.");
-	// 	return existingUser;
-	// }
 }
 
 module.exports = UserService;
