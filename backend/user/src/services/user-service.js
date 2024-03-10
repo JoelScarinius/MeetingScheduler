@@ -56,7 +56,7 @@ class UserService {
 			REFRESH_TOKEN_SECRET,
 			REFRESH_TOKEN_DURATION
 		);
-		const result = await this.repository.SaveRefreshToken(refreshToken);
+		const result = await this.repository.SaveRefreshToken(existingUser, refreshToken);
 		console.log(result);
 
 		return { existingUser, accessToken, refreshToken };

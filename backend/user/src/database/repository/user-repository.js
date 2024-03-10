@@ -71,7 +71,7 @@ class UserRepository {
 	// get user by id
 	async SaveRefreshToken(user, refreshToken) {
 		user.refreshToken = refreshToken;
-		const result = await existingUser.save();
+		const result = await user.save();
 		return result;
 	}
 }
