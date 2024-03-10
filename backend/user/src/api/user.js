@@ -52,17 +52,6 @@ module.exports = (app, channel) => {
 		}
 	});
 
-	// get user
-	// app.get("/:userId", UserAuth, async (req, res, next) => {
-	// 	try {
-	// 		const userId = req.params.userId;
-	// 		const user = await service.GetUser(userId);
-	// 		res.json(user);
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// });
-
 	// update user
 	app.post("/update", UserAuth, async (req, res, next) => {
 		try {
@@ -94,7 +83,16 @@ module.exports = (app, channel) => {
 
 	app.get("/who", (req, res) => {
 		return res.status(200).json({ msg: "/user : I am User Service" });
-		// res.sendStatus(200);
 	});
-	// return app;
+
+	// get user
+	app.get("/:userId", UserAuth, async (req, res, next) => {
+		try {
+			const userId = req.params.userId;
+			const user = await service.GetUser(userId);
+			res.json(user);
+		} catch (error) {
+			next(error);
+		}
+	});
 };
