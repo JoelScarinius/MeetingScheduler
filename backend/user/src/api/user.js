@@ -81,7 +81,7 @@ module.exports = (app, channel) => {
 		}
 	});
 
-	app.get("/who", (req, res) => {
+	app.get("/whoami", (req, res) => {
 		return res.status(200).json({ msg: "/user : I am User Service" });
 	});
 

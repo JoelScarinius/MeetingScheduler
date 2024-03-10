@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { user, appEvents } = require("./api");
-const { CreateChannel, SubscribeMessage } = require("./utils");
+const { user } = require("./api");
 
 module.exports = (app, channel) => {
 	app.use(express.json());
@@ -13,15 +12,7 @@ module.exports = (app, channel) => {
 		})
 	);
 
-	// app.get("/who", (req, res) => {
-	// 	return res.status(200).json({ msg: "/user : I am User Service" });
-	// 	// res.sendStatus(200);
-	// });
 	// app.use(express.static(__dirname + "/public"));
-
-	// app.use(/whoami)
-
-	// const channel = await CreateChannel();
 
 	user(app, channel);
 };
