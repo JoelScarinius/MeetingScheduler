@@ -3,7 +3,7 @@ kind: HorizontalPodAutoscaler
 metadata:
     name: hpa-cpu-memory
 spec:
-    minReplicas: 2
+    minReplicas: 1
     maxReplicas: 10
     scaleTargetRef:
         apiVersion: apps/v1
@@ -15,13 +15,13 @@ spec:
               name: cpu
               target:
                   type: Utilization
-                  averageUtilization: 2
+                  averageUtilization: 30
         - type: Resource
           resource:
               name: memory
               target:
                   type: AverageValue
-                  averageValue: 50Mi
+                  averageValue: 10Mi
     behavior:
         scaleDown:
             stabilizationWindowSeconds: 300

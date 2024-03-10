@@ -52,17 +52,6 @@ module.exports = (app, channel) => {
 		}
 	});
 
-	// get user
-	app.get("/:userId", UserAuth, async (req, res, next) => {
-		try {
-			const userId = req.params.userId;
-			const user = await service.GetUser(userId);
-			res.json(user);
-		} catch (error) {
-			next(error);
-		}
-	});
-
 	// update user
 	app.post("/update", UserAuth, async (req, res, next) => {
 		try {
@@ -87,6 +76,21 @@ module.exports = (app, channel) => {
 			const message = `${req.body.user} is still logged in.`;
 			PrintFormattedMessage(message);
 			res.status(200).json({ message: message });
+		} catch (error) {
+			next(error);
+		}
+	});
+
+	app.get("/whoami", (req, res) => {
+		return res.status(200).json({ msg: "/user : I am User Service" });
+	});
+
+	// get user
+	app.get("/:userId", UserAuth, async (req, res, next) => {
+		try {
+			const userId = req.params.userId;
+			const user = await service.GetUser(userId);
+			res.json(user);
 		} catch (error) {
 			next(error);
 		}

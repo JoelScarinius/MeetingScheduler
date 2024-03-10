@@ -5,13 +5,11 @@ const expressApp = require("./express-app");
 const { CreateChannel } = require("./utils");
 const fs = require("node:fs");
 
-const HEALTHZ_TIME = 40000; // 40000 milliseconds
-
 const StartServer = async () => {
 	const app = express();
 	await databaseConnection();
 	const channel = await CreateChannel();
-	await expressApp(app);
+
 	// Catch application errors and deliver to logger
 	app.use((error, req, res, next) => {
 		const STATUS_CODE = error.statusCode || 500;
@@ -27,38 +25,44 @@ const StartServer = async () => {
 		)}`
 	);
 	// This is a normal HTTP Get route (path) for the microservice (part of the microservice's functionality)
-	app.get("/", async (req, res) => {
+	app.get("/ready", async (req, res) => {
 		res.sendStatus(200);
 	});
 	// Respond to HTTP GET requests on route (path) "/healthz" to indicate "alive" (this is what the livenessProbe checks)
 
 	app.get("/healthz", async (req, res) => {
-		const current = new Date();
-		console.log(
-			`Route /healthz hit at time ${current.toLocaleTimeString(
-				"sv-SE"
-			)}, Elapsed seconds since startup: ${
-				(current - startupTimestamp) / 1000
-			}`
-		);
+		// Replace with your actual checks
+		const isDatabaseConnected = await databaseConnection();
+		// const isRabbitMQConnected = await CreateChannel();
+		const timestamp = new Date();
 
-		if (current - startupTimestamp < HEALTHZ_TIME) {
-			console.log("Route /healthz returning status 200");
-			res.sendStatus(200); // If within 40 seconds of the microservice's "startupTimestamp", return status "200" (ok)
+		if (isDatabaseConnected) {
+			// if (isDatabaseConnected && isRabbitMQConnected) {
+			res.status(200).json({
+				status: "OK",
+				timestamp: timestamp.toISOString(),
+			});
 		} else {
-			console.log("Route /healthz returning status 500");
-			res.sendStatus(500); // If not within 40 seconds of the microservice's "startupTimestamp", return status "500" (internal server error)
+			res.status(500).json({
+				status: "Error",
+				timestamp: timestamp.toISOString(),
+				errors: {
+					database: isDatabaseConnected ? "OK" : "Not connected",
+					// rabbitMQ: isRabbitMQConnected ? "OK" : "Not connected",
+				},
+			});
 		}
 	});
 
 	// Write file "/tmp/started" to indicate "started" (this is what the startupProbe checks)
-
 	try {
 		fs.writeFileSync("/tmp/started", "started");
 		console.log("Wrote file /tmp/started.");
 	} catch (err) {
 		console.error(err);
 	}
+
+	await expressApp(app, channel);
 
 	app.listen(PORT, () => {
 		console.log(`listening to port ${PORT}`);

@@ -54,9 +54,3 @@ jobs:
 
             - name: hpa-cpu-memory
               run: envsubst < kubernetes/hpa-cpu-memory.yaml | kubectl apply -f -
-
-            - name: hpa-cpu
-              run: envsubst < kubernetes/hpa-cpu.yaml | kubectl apply -f -
-
-            - name: hpa-memory
-              run: envsubst < kubernetes/hpa-memory.yaml | kubectl apply -f -
