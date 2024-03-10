@@ -1,8 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const { meeting } = require("./api");
-const { CreateChannel } = require("./utils");
-require("dotenv").config();
 
 module.exports = async (app, channel) => {
 	app.use(express.json());
