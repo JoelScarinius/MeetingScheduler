@@ -30,7 +30,7 @@ class UserService {
 	async LogIn({ email, password }) {
 		const existingUser = await this.repository.FindUser(email);
 
-		if (!existingUser) throw new AuthenticationError("User not found.");
+		if (!existingUser) throw new AuthenticationError("No such user found.");
 		const validPassword = await ValidatePassword(
 			password,
 			existingUser.password,

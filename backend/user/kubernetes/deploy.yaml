@@ -16,9 +16,11 @@ spec:
                 - name: user
                   image: $CONTAINER_REGISTRY_LOGIN_SERVER/user:$VERSION
                   imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5001
                   env:
                       - name: PORT
-                        value: "80"
+                        value: "5001"
                   resources:
                       requests:
                           cpu: 126m
@@ -37,4 +39,5 @@ spec:
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 80
+          targetPort: 5001
+    type: LoadBalancer

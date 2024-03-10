@@ -10,8 +10,7 @@ const StartServer = async () => {
 	const app = express();
 	await databaseConnection();
 	const channel = await CreateChannel();
-	await expressApp(app);
-
+	expressApp(app, channel);
 	// Catch application errors and deliver to logger
 	app.use((error, req, res, next) => {
 		const STATUS_CODE = error.statusCode || 500;
@@ -23,11 +22,6 @@ const StartServer = async () => {
 	// Set timestamp "startupTimestamp" of when the microservice started
 	const startupTimestamp = new Date();
 	console.log(`Set startupTimestamp to ${startupTimestamp.toLocaleTimeString("sv-SE")}`);
-
-	// This is a normal HTTP Get route (path) for the microservice (part of the microservice's functionality)
-	app.get("/", async (req, res) => {
-		res.sendStatus(200);
-	});
 
 	// Respond to HTTP GET requests on route (path) "/healthz" to indicate "alive" (this is what the livenessProbe checks)
 	app.get("/healthz", async (req, res) => {
