@@ -45,15 +45,8 @@ module.exports = (app, channel) => {
 		}
 	});
 
-	// Get meetings with the provided date
-	app.get("/:date", UserAuth, async (req, res, next) => {
-		try {
-			const meetingDate = req.params.date;
-			const meeting = await service.GetMeetingsByDate(meetingDate);
-			res.status(200).json(meeting);
-		} catch (error) {
-			next(error);
-		}
+	app.get("/whoami", (req, res, next) => {
+		return res.status(200).json({ msg: "/meeting : I am Meeting Service" });
 	});
 
 	// Update an existing meeting
@@ -93,7 +86,14 @@ module.exports = (app, channel) => {
 		}
 	});
 
-	app.get("/whoami", (req, res, next) => {
-		return res.status(200).json({ msg: "/meeting : I am Meeting Service" });
+	// Get meetings with the provided date
+	app.get("/:date", UserAuth, async (req, res, next) => {
+		try {
+			const meetingDate = req.params.date;
+			const meeting = await service.GetMeetingsByDate(meetingDate);
+			res.status(200).json(meeting);
+		} catch (error) {
+			next(error);
+		}
 	});
 };

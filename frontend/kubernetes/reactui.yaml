@@ -16,9 +16,11 @@ spec:
                 - name: frontend
                   image: $CONTAINER_REGISTRY_LOGIN_SERVER/frontend:$VERSION
                   imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 3000
                   env:
                       - name: PORT
-                        value: "80"
+                        value: "3000"
                   resources:
                       requests:
                           cpu: 512m
@@ -38,4 +40,4 @@ spec:
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 80
+          targetPort: 3000
