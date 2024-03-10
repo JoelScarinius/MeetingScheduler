@@ -1,0 +1,135 @@
+# version: "3"
+# services:
+# mongo-db:
+#     image: mongo-express:latest
+#     ports:
+#         - "27018:27017"
+#     container_name: mongo-db
+#     volumes:
+#         - ./backend/db/:/data/db
+
+# rabbitmq:
+#     image: rabbitmq:alpine
+#     container_name: rabbitmq
+#     ports:
+#         - "5672:5672"
+
+# frontend:
+#     build:
+#         dockerfile: Dockerfile
+#         context: ./frontend
+#     ports:
+#         - "3000:3000"
+#     container_name: frontend
+#     restart: always
+#     volumes:
+#         - .:/app
+#         - /app/frontend/node_modules
+#     env_file:
+#         - ./frontend/.env
+
+# user:
+#     build:
+#         dockerfile: Dockerfile
+#         context: ./backend/user
+#     container_name: user
+#     ports:
+#         - "5001:5001"
+#     restart: always
+#     # depends_on:
+#     #     - "mongo-db"
+#     #     - "rabbitmq"
+#     volumes:
+#         - .:/app
+#         - /app/backend/user/node_modules
+
+#     env_file:
+#         - ./backend/user/.env
+
+# meeting:
+#     build:
+#         dockerfile: Dockerfile
+#         context: ./backend/meeting
+#     container_name: meeting
+#     ports:
+#         - "5002:5002"
+#     restart: always
+#     # depends_on:
+#     #     - "mongo-db"
+#     #     - "rabbitmq"
+#     volumes:
+#         - .:/app/
+#         - /app/backend/meeting/node_modules
+#     env_file:
+#         - ./backend/meeting/.env
+
+# nginx-proxy:
+#     build:
+#         dockerfile: Dockerfile
+#         context: ./backend/proxy
+#     depends_on:
+#         - user
+#         - meeting
+#         - frontend
+#     ports:
+#         - "80:80"
+
+version: "3"
+services:
+    # nosql-db:
+    #     image: mvertes/alpine-mongo
+    #     ports:
+    #         - "27018:27017"
+    #     container_name: nosql-db
+    #     volumes:
+    #         - ./db/:/data/db
+
+    # rabbitmq:
+    #     image: rabbitmq:alpine
+    #     container_name: rabbitmq
+    #     ports:
+    #         - "5672:5672"
+
+    user:
+        build:
+            dockerfile: Dockerfile
+            context: ./user
+        container_name: user
+        ports:
+            - "5001:5001"
+        restart: always
+        # depends_on:
+        #     - "nosql-db"
+        #     - "rabbitmq"
+        volumes:
+            - .:/app
+            - /app/user/node_modules
+        env_file:
+            - ./user/.env
+
+    meeting:
+        build:
+            dockerfile: Dockerfile
+            context: ./meeting
+        container_name: meeting
+        ports:
+            - "5002:5002"
+        restart: always
+        # depends_on:
+        #     - "nosql-db"
+        #     - "rabbitmq"
+        volumes:
+            - .:/app/
+            - /app/meeting/node_modules
+        env_file:
+            - ./meeting/.env
+
+    nginx-proxy:
+        build:
+            dockerfile: Dockerfile
+            context: ./proxy
+        depends_on:
+            - user
+            - meeting
+        ports:
+            - 80:80

@@ -1,12 +1,18 @@
 version: "3"
 services:
-    mongo-db:
-        image: mongo-express:latest
-        ports:
-            - "27018:27017"
-        container_name: mongo-db
-        volumes:
-            - ./backend/db/:/data/db
+    # mongo-db:
+    #     image: mongo-express:latest
+    #     ports:
+    #         - "27018:27017"
+    #     container_name: mongo-db
+    #     volumes:
+    #         - ./backend/db/:/data/db
+
+    # rabbitmq:
+    #     image: rabbitmq:alpine
+    #     container_name: rabbitmq
+    #     ports:
+    #         - "5672:5672"
 
     frontend:
         build:
@@ -22,23 +28,17 @@ services:
         env_file:
             - ./frontend/.env
 
-    rabbitmq:
-        image: rabbitmq:alpine
-        container_name: rabbitmq
-        ports:
-            - "5672:5672"
-
     user:
         build:
             dockerfile: Dockerfile
             context: ./backend/user
         container_name: user
         ports:
-            - "80:80"
+            - "5001:5001"
         restart: always
-        depends_on:
-            - "mongo-db"
-            - "rabbitmq"
+        # depends_on:
+        #     - "mongo-db"
+        #     - "rabbitmq"
         volumes:
             - .:/app
             - /app/backend/user/node_modules
@@ -52,11 +52,11 @@ services:
             context: ./backend/meeting
         container_name: meeting
         ports:
-            - "80:80"
+            - "5002:5002"
         restart: always
-        depends_on:
-            - "mongo-db"
-            - "rabbitmq"
+        # depends_on:
+        #     - "mongo-db"
+        #     - "rabbitmq"
         volumes:
             - .:/app/
             - /app/backend/meeting/node_modules
@@ -70,5 +70,6 @@ services:
         depends_on:
             - user
             - meeting
+            - frontend
         ports:
-            - 80:80
+            - "80:80"

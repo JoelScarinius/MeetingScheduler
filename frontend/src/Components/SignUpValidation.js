@@ -50,19 +50,19 @@ const Signup = () => {
 
 		try {
 			console.log(firstName, lastName, email, password);
-			const { data } = await axios.post(
+			const data = await axios.post(
 				"/user/signup",
 				{ firstName, lastName, email, password },
 				{ withCredentials: true }
 			);
 			console.log(data);
 			// setAccessToken(data.token);
-			sendToastSuccess(data.message);
+			sendToastSuccess(data?.message);
 			saveUser(data.user);
 			setIsLoggedIn(true);
 		} catch (error) {
 			console.error(error);
-			sendToastError(error.response.data);
+			sendToastError(error.message);
 		}
 		setPassword("");
 		setConfirmPassword("");
