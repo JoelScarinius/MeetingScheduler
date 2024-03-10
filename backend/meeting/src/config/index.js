@@ -11,7 +11,7 @@ const dotEnv = require("dotenv");
 // }
 dotEnv.config();
 
-module.exports = {
+const envs = {
 	MEETING_SERVICE_PORT: process.env.MEETING_SERVICE_PORT,
 	DB_URL: process.env.MONGODB_URI,
 	APP_SECRET: process.env.APP_SECRET,
@@ -19,3 +19,7 @@ module.exports = {
 	MSG_QUEUE_URL: process.env.MSG_QUEUE_URL,
 	MEETING_SERVICE: "meeting_service",
 };
+
+console.log(envs.toString());
+
+module.exports = envs;

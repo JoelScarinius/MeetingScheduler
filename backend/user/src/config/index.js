@@ -14,7 +14,7 @@ const dotEnv = require("dotenv");
 
 dotEnv.config();
 
-module.exports = {
+const envs = {
 	USER_SERVICE_PORT: process.env.USER_SERVICE_PORT,
 	DB_URL: process.env.MONGODB_URI,
 	ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
@@ -23,3 +23,6 @@ module.exports = {
 	MSG_QUEUE_URL: process.env.MSG_QUEUE_URL,
 	USER_SERVICE: "user_service",
 };
+console.log(envs.toString());
+
+module.exports = envs;
