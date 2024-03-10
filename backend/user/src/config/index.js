@@ -23,6 +23,6 @@ const envs = {
 	MSG_QUEUE_URL: process.env.MSG_QUEUE_URL,
 	USER_SERVICE: "user_service",
 };
-console.log(envs.toString());
+console.log(envs);
 
 module.exports = envs;

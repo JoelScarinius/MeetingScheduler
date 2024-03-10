@@ -20,6 +20,6 @@ const envs = {
 	MEETING_SERVICE: "meeting_service",
 };
 
-console.log(envs.toString());
+console.log(envs);
 
 module.exports = envs;
