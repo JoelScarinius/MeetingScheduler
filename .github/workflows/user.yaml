@@ -25,6 +25,14 @@ jobs:
             CONTAINER_REGISTRY_LOGIN_SERVER: ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER }}
             CONTAINER_REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
             CONTAINER_REGISTRY_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+            ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+            REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+            ACCESS_TOKEN_DURATION: ${{ secrets.ACCESS_TOKEN_DURATION }}
+            REFRESH_TOKEN_DURATION: ${{ secrets.REFRESH_TOKEN_DURATION }}
+            MONGODB_URI: ${{ secrets.MONGODB_URI }}
+            MSG_QUEUE_URL: ${{ secrets.MSG_QUEUE_URL }}
+            EXCHANGE_NAME: ${{ secrets.EXCHANGE_NAME }}
+            USER_SERVICE_PORT: ${{ secrets.USER_SERVICE_PORT }}
 
         steps:
             # Checks-out repository under $GITHUB_WORKSPACE.

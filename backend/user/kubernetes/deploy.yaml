@@ -19,8 +19,8 @@ spec:
                   ports:
                       - containerPort: 5001
                   env:
-                      - name: PORT
-                        value: "5001"
+                      - name: USER_SERVICE_PORT
+                        value: $USER_SERVICE_PORT
                   resources:
                       requests:
                           cpu: 126m
