@@ -4,7 +4,6 @@ const { databaseConnection } = require("./database");
 const expressApp = require("./express-app");
 const { CreateChannel } = require("./utils");
 const fs = require("node:fs");
-const HEALTHZ_TIME = 40000; // 40000 milliseconds
 
 const StartServer = async () => {
 	const app = express();
@@ -34,11 +33,10 @@ const StartServer = async () => {
 	app.get("/healthz", async (req, res) => {
 		// Replace with your actual checks
 		const isDatabaseConnected = await databaseConnection();
-		const isRabbitMQConnected = await CreateChannel();
 
 		const timestamp = new Date();
 
-		if (isDatabaseConnected && isRabbitMQConnected) {
+		if (isDatabaseConnected) {
 			res.status(200).json({
 				status: "OK",
 				timestamp: timestamp.toISOString(),
@@ -49,7 +47,6 @@ const StartServer = async () => {
 				timestamp: timestamp.toISOString(),
 				errors: {
 					database: isDatabaseConnected ? "OK" : "Not connected",
-					rabbitMQ: isRabbitMQConnected ? "OK" : "Not connected",
 				},
 			});
 		}
