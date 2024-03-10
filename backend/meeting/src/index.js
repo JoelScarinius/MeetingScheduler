@@ -10,7 +10,6 @@ const StartServer = async () => {
 	const app = express();
 	await databaseConnection();
 	const channel = await CreateChannel();
-	await expressApp(app);
 
 	// Catch application errors and deliver to logger
 	app.use((error, req, res, next) => {
@@ -59,6 +58,8 @@ const StartServer = async () => {
 	} catch (err) {
 		console.error(err);
 	}
+
+	await expressApp(app);
 
 	app.listen(PORT, () => {
 		console.log(`listening to port ${PORT}`);
