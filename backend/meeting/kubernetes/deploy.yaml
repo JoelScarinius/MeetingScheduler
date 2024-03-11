@@ -18,9 +18,37 @@ spec:
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5002
-                  env:
-                      - name: MEETING_SERVICE_PORT
-                        value: "5002"
+                  volumeMounts:
+                      - name: meeting-service-secret
+                        mountPath: /etc/nginx/ssl
+                        readOnly: true
+                  # env:
+                  #     - name: MEETING_SERVICE_PORT
+                  #       valueFrom:
+                  #           secretKeyRef:
+                  #               name: meeting-secret
+                  #               key: meeting_service_port
+                  #     - name: MONGODB_URI
+                  #       valueFrom:
+                  #           secretKeyRef:
+                  #               name: meeting-secret
+                  #               key: mongodb_uri
+                  #     - name: MSG_QUEUE_URL
+                  #       valueFrom:
+                  #           secretKeyRef:
+                  #               name: meeting-secret
+                  #               key: msg_queue_url
+                  #     - name: EXCHANGE_NAME
+                  #       valueFrom:
+                  #           secretKeyRef:
+                  #               name: meeting-secret
+                  #               key: exchange_name
+                  #     - name: APP_SECRET
+                  #       valueFrom:
+                  #           secretKeyRef:
+                  #               name: meeting-secret
+                  #               key: app_secret
+
                   resources:
                       requests:
                           cpu: 126m
@@ -40,6 +68,10 @@ spec:
                           port: 5002
                       initialDelaySeconds: 5
                       periodSeconds: 10
+            volumes:
+                - name: meeting-service-secret
+                  secret:
+                      secretName: meeting-secret
 ---
 apiVersion: v1
 kind: Service
