@@ -63,4 +63,12 @@ jobs:
             # Expands the manifest YAML file (i.e. replaces placeholders in the YAML file with environment variable values)
             # and deploys the microservice to the Azure Kubernetes Service (AKS) cluster.
             - name: Deploy
+              # Add env variables to docker file
+              # - uses: danielr1996/envsubst-action@1.0.0
+              #   env:
+              #       VERSION: ${{ github.sha }}
+              #       REACT_APP_SERVER_IP: ${{ secrets.REACT_APP_SERVER_IP }}
+              #   with:
+              #       input: ./kubernetes/deploy.yaml
+              #       output: ./kubernetes/deploy-final.yaml
               run: envsubst < kubernetes/reactui.yaml | kubectl apply -f -
