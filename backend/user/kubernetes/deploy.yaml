@@ -18,12 +18,27 @@ spec:
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5001
-                  volumeMounts:
-                      - name: user-service-secret
-                        mountPath: /
-                        readOnly: true
-                  # env:
-                  # - name: USER_SERVICE_PORT
+                  # volumeMounts:
+                  #     - name: user-service-secret
+                  #       mountPath: /
+                  #       readOnly: true
+                  env:
+                      - name: USER_SERVICE_PORT
+                        value: $USER_SERVICE_PORT
+                      - name: MONGODB_URI
+                        value: $MONGODB_URI
+                      - name: MSG_QUEUE_URL
+                        value: $MSG_QUEUE_URL
+                      - name: EXCHANGE_NAME
+                        value: $EXCHANGE_NAME
+                      - name: ACCESS_TOKEN_SECRET
+                        value: $ACCESS_TOKEN_SECRET
+                      - name: REFRESH_TOKEN_SECRET
+                        value: $REFRESH_TOKEN_SECRET
+                      - name: ACCESS_TOKEN_DURATION
+                        value: $ACCESS_TOKEN_DURATION
+                      - name: REFRESH_TOKEN_DURATION
+                        value: $REFRESH_TOKEN_DURATION
                   #   valueFrom:
                   #       secretKeyRef:
                   #           name: user-secret
@@ -82,10 +97,10 @@ spec:
                           port: 5001
                       initialDelaySeconds: 5
                       periodSeconds: 10
-            volumes:
-                - name: user-service-secret
-                  secret:
-                      secretName: user-secret
+            # volumes:
+            #     - name: user-service-secret
+            #       secret:
+            #           secretName: user-secret
 ---
 apiVersion: v1
 kind: Service

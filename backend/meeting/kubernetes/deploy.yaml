@@ -18,11 +18,21 @@ spec:
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5002
-                  volumeMounts:
-                      - name: meeting-service-secret
-                        mountPath: /
-                        readOnly: true
-                  # env:
+                  # volumeMounts:
+                  #     - name: meeting-service-secret
+                  #       mountPath: /
+                  #       readOnly: true
+                  env:
+                      - name: MEETING_SERVICE_PORT
+                        value: $MEETING_SERVICE_PORT
+                      - name: MONGODB_URI
+                        value: $MONGODB_URI
+                      - name: MSG_QUEUE_URL
+                        value: $MSG_QUEUE_URL
+                      - name: EXCHANGE_NAME
+                        value: $EXCHANGE_NAME
+                      - name: APP_SECRET
+                        value: $APP_SECRET
                   #     - name: MEETING_SERVICE_PORT
                   #       valueFrom:
                   #           secretKeyRef:
@@ -68,10 +78,10 @@ spec:
                           port: 5002
                       initialDelaySeconds: 5
                       periodSeconds: 10
-            volumes:
-                - name: meeting-service-secret
-                  secret:
-                      secretName: meeting-secret
+            # volumes:
+            #     - name: meeting-service-secret
+            #       secret:
+            #           secretName: meeting-secret
 ---
 apiVersion: v1
 kind: Service

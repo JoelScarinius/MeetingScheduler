@@ -18,13 +18,13 @@ spec:
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 3000
-                  volumeMounts:
-                      - name: react-secret
-                        mountPath: /
-                        readOnly: true
-                  # env:
-                  #     - name: PORT
-                  #       value: "3000"
+                  # volumeMounts:
+                  #     - name: react-secret
+                  #       mountPath: /
+                  #       readOnly: true
+                  env:
+                      - name: REACT_APP_SERVER_IP
+                        value: $REACT_APP_SERVER_IP
                   resources:
                       requests:
                           cpu: 512m
@@ -32,10 +32,10 @@ spec:
                       limits:
                           cpu: 1024m
                           memory: 4096Mi
-            volumes:
-                - name: react-secret
-                  secret:
-                      secretName: reactui-secret
+            # volumes:
+            #     - name: react-secret
+            #       secret:
+            #           secretName: reactui-secret
 
 ---
 apiVersion: v1

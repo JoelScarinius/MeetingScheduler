@@ -18,6 +18,13 @@ spec:
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 80
+                  env:
+                      - name: NGINX_FRONTEND_URL
+                        value: "frontend"
+                      - name: NGINX_USER_URL
+                        value: "user"
+                      - name: NGINX_MEETING_URL
+                        value: "meeting"
                   resources:
                       requests:
                           cpu: 200m
