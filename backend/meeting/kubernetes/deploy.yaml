@@ -20,7 +20,7 @@ spec:
                       - containerPort: 5002
                   volumeMounts:
                       - name: meeting-service-secret
-                        mountPath: /etc/nginx/ssl
+                        mountPath: /
                         readOnly: true
                   # env:
                   #     - name: MEETING_SERVICE_PORT

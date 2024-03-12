@@ -20,7 +20,7 @@ spec:
                       - containerPort: 5001
                   volumeMounts:
                       - name: user-service-secret
-                        mountPath: /etc/nginx/ssl
+                        mountPath: /
                         readOnly: true
                   # env:
                   # - name: USER_SERVICE_PORT
@@ -82,7 +82,6 @@ spec:
                           port: 5001
                       initialDelaySeconds: 5
                       periodSeconds: 10
-
             volumes:
                 - name: user-service-secret
                   secret:

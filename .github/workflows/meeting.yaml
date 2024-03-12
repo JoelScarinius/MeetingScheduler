@@ -67,17 +67,18 @@ jobs:
 
             # Expands the manifest YAML file (i.e. replaces placeholders in the YAML file with environment variable values)
             # and deploys the microservice to the Azure Kubernetes Service (AKS) cluster.
-            - name: Deploy
 
-              # - uses: danielr1996/envsubst-action@1.0.0
-              #   env:
-              #       VERSION: ${{ github.sha }}
-              #       MONGODB_URI: ${{ secrets.MONGODB_URI }}
-              #       MSG_QUEUE_URL: ${{ secrets.MSG_QUEUE_URL }}
-              #       EXCHANGE_NAME: ${{ secrets.EXCHANGE_NAME }}
-              #       MEETING_SERVICE_PORT: ${{ secrets.MEETING_SERVICE_PORT }}
-              #       APP_SECRET: ${{ secrets.APP_SECRET }}
-              #   with:
-              #       input: ./kubernetes/deploy.yaml
-              #       output: ./kubernetes/deploy-final.yaml
-              run: envsubst < kubernetes/deploy.yaml | kubectl apply -f -
+            - uses: danielr1996/envsubst-action@1.0.0
+              env:
+                  VERSION: ${{ github.sha }}
+                  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+                  MSG_QUEUE_URL: ${{ secrets.MSG_QUEUE_URL }}
+                  EXCHANGE_NAME: ${{ secrets.EXCHANGE_NAME }}
+                  MEETING_SERVICE_PORT: ${{ secrets.MEETING_SERVICE_PORT }}
+                  APP_SECRET: ${{ secrets.APP_SECRET }}
+              with:
+                  input: ./kubernetes/deploy.yaml
+                  output: ./kubernetes/deploy-final.yaml
+
+            - name: Deploy
+              run: kubectl apply -f ./kubernetes/deploy-final.yaml

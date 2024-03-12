@@ -68,25 +68,23 @@ jobs:
                   base64-kube-config: ${{ secrets.KUBE_CONFIG }}
                   kubectl-version: v1.24.2
 
+              # Add env variables to docker file
+            - uses: danielr1996/envsubst-action@1.0.0
+              env:
+                  VERSION: ${{ github.sha }}
+                  ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+                  REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+                  ACCESS_TOKEN_DURATION: ${{ secrets.ACCESS_TOKEN_DURATION }}
+                  REFRESH_TOKEN_DURATION: ${{ secrets.REFRESH_TOKEN_DURATION }}
+                  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+                  MSG_QUEUE_URL: ${{ secrets.MSG_QUEUE_URL }}
+                  EXCHANGE_NAME: ${{ secrets.EXCHANGE_NAME }}
+                  USER_SERVICE_PORT: ${{ secrets.USER_SERVICE_PORT }}
+              with:
+                  input: ./kubernetes/deploy.yaml
+                  output: ./kubernetes/deploy-final.yaml
+
             # Expands the manifest YAML file (i.e. replaces placeholders in the YAML file with environment variable values)
             # and deploys the microservice to the Azure Kubernetes Service (AKS) cluster.
             - name: Deploy
-
-              # Add env variables to docker file
-              # - uses: danielr1996/envsubst-action@1.0.0
-              #   env:
-              #       VERSION: ${{ github.sha }}
-              #       ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-              #       REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
-              #       ACCESS_TOKEN_DURATION: ${{ secrets.ACCESS_TOKEN_DURATION }}
-              #       REFRESH_TOKEN_DURATION: ${{ secrets.REFRESH_TOKEN_DURATION }}
-              #       MONGODB_URI: ${{ secrets.MONGODB_URI }}
-              #       MSG_QUEUE_URL: ${{ secrets.MSG_QUEUE_URL }}
-              #       EXCHANGE_NAME: ${{ secrets.EXCHANGE_NAME }}
-              #       USER_SERVICE_PORT: ${{ secrets.USER_SERVICE_PORT }}
-              #   with:
-              #       input: ./kubernetes/deploy.yaml
-              #       output: ./kubernetes/deploy-final.yaml
-
-              # envsubst < kubernetes/secrets.yaml | kubectl apply -f -
-              run: envsubst < kubernetes/deploy-final.yaml | kubectl apply -f -
+              run: kubectl apply -f - kubernetes/deploy-final.yaml

@@ -20,7 +20,7 @@ spec:
                       - containerPort: 3000
                   volumeMounts:
                       - name: react-secret
-                        mountPath: /etc/nginx/ssl
+                        mountPath: /
                         readOnly: true
                   # env:
                   #     - name: PORT
