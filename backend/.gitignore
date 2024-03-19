@@ -1,7 +1,5 @@
 # Ignore every directory starting with apache-jmeter
 apache-jmeter*/
-# Ignore all files ending with .csv
-*.csv
 
 *.exe
 # Local .terraform directories
