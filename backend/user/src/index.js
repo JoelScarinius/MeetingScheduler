@@ -10,14 +10,6 @@ const StartServer = async () => {
 	await databaseConnection();
 	const channel = await CreateChannel();
 
-	// Catch application errors and deliver to logger
-	app.use((error, req, res, next) => {
-		const STATUS_CODE = error.statusCode || 500;
-		const data = error.data || error.message;
-
-		return res.status(STATUS_CODE).json(data);
-	});
-
 	// Set timestamp "startupTimestamp" of when the microservice started
 	const startupTimestamp = new Date();
 	console.log(`Set startupTimestamp to ${startupTimestamp.toLocaleTimeString("sv-SE")}`);
@@ -61,6 +53,14 @@ const StartServer = async () => {
 	}
 
 	await expressApp(app, channel);
+
+	// Catch application errors and deliver to logger
+	app.use((error, req, res, next) => {
+		const STATUS_CODE = error.statusCode || 500;
+		const data = error.data || error.message;
+
+		return res.status(STATUS_CODE).json(data);
+	});
 
 	app.listen(+USER_SERVICE_PORT, () => {
 		console.log(`Listening to port ${USER_SERVICE_PORT}`);

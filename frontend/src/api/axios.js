@@ -1,11 +1,13 @@
 import axios from "axios";
 // import { SERVER_URL } from "../config";
-const SERVER_URL = `http://${process.env.REACT_APP_SERVER_IP}`;
+const SERVER_URL = `http://${process.env.REACT_APP_SERVER_URL}`;
+
+console.log(SERVER_URL);
 
 export default axios.create({
 	baseURL: SERVER_URL,
-	headers: { "Content-Type": "application/json" },
-	withCredentials: true,
+	// headers: { "Content-Type": "application/json" },
+	// withCredentials: true,
 });
 
 export const axiosPrivate = axios.create({

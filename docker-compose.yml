@@ -23,10 +23,15 @@ services:
         container_name: frontend
         restart: always
         volumes:
-            - .:/app
-            - /app/frontend/node_modules
+            - ./frontend:/app
+            - /app/node_modules
         env_file:
             - ./frontend/.env
+        stdin_open: true
+        tty: true
+        environment:
+            - WATCHPACK_POLLING=true
+            - REACT_APP_SERVER_URL=localhost:80
 
     user:
         build:
@@ -40,8 +45,8 @@ services:
         #     - "mongo-db"
         #     - "rabbitmq"
         volumes:
-            - .:/app
-            - /app/backend/user/node_modules
+            - ./backend/user:/app
+            - /app/node_modules
         env_file:
             - ./backend/user/.env
 
@@ -57,8 +62,8 @@ services:
         #     - "mongo-db"
         #     - "rabbitmq"
         volumes:
-            - .:/app/
-            - /app/backend/meeting/node_modules
+            - ./backend/meeting:/app/
+            - /app/node_modules
         env_file:
             - ./backend/meeting/.env
 
@@ -74,3 +79,8 @@ services:
             - "80:80"
         env_file:
             - ./backend/proxy/.env
+
+        environment:
+            - NGINX_FRONTEND_URL=localhost:3000
+            - NGINX_USER_URL=localhost:5001
+            - NGINX_MEETING_URL=localhost:5002

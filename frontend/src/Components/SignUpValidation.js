@@ -81,7 +81,7 @@ const Signup = () => {
 						className="input_margin"
 						type="text"
 						name="firstName"
-						placeholder="FirstName"
+						placeholder="First name"
 						autoComplete="firstName"
 						value={firstName}
 						onChange={e => setFirstName(e.target.value)}
@@ -98,7 +98,7 @@ const Signup = () => {
 						className="input_margin"
 						type="text"
 						name="lastName"
-						placeholder="LastName"
+						placeholder="Last name"
 						autoComplete="lastName"
 						value={lastName}
 						onChange={e => setLastName(e.target.value)}

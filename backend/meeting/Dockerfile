@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /app/meeting
+WORKDIR /app
 
 COPY package.json .
 
@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 5002
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

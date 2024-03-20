@@ -17,8 +17,10 @@ module.exports = (app, channel) => {
 			const userInput = req.body;
 			const { user } = await service.SignUp(userInput);
 			// Send a success response with user information
+			const message = `${user.firstName} signed in!`;
+			PrintFormattedMessage(message);
 			res.status(201).json({
-				message: `${user.firstName} signed in!`,
+				message: message,
 				user,
 			});
 		} catch (error) {

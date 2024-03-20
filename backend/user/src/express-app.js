@@ -7,7 +7,11 @@ module.exports = (app, channel) => {
 	app.use(express.json());
 	app.use(
 		cors({
-			origin: [`http://${process.env.GATEWAY_IP}`, "http://localhost:3000"],
+			origin: [
+				`http://${process.env.GATEWAY_IP}`,
+				"http://localhost:3000",
+				"http://localhost:80",
+			],
 			methods: ["GET", "POST", "PUT", "DELETE"],
 			credentials: true,
 		})
