@@ -30,6 +30,12 @@ jobs:
             # Checks-out repository under $GITHUB_WORKSPACE.
             - uses: actions/checkout@v4
 
+            
+            - name: Debug version and registry values
+              run: |
+                  echo "VERSION: $VERSION"
+                  echo "CONTAINER_REGISTRY_LOGIN_SERVER: $CONTAINER_REGISTRY_LOGIN_SERVER"
+
             # Builds the Docker image.
             - name: Build
               run: docker build -t $CONTAINER_REGISTRY_LOGIN_SERVER/proxy:$VERSION --file ./Dockerfile .
