@@ -71,6 +71,7 @@ services:
         build:
             dockerfile: Dockerfile
             context: ./backend/proxy
+        container_name: nginx-proxy
         depends_on:
             - user
             - meeting
@@ -79,7 +80,6 @@ services:
             - "80:80"
         env_file:
             - ./backend/proxy/.env
-
         environment:
             - NGINX_FRONTEND_URL=localhost:3000
             - NGINX_USER_URL=localhost:5001
